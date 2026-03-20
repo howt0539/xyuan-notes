@@ -171,64 +171,6 @@ def render_livestream(meta, topics):
     </section>'''
 
 
-def build_topic_index(all_livestreams):
-    """Build a cross-livestream topic index."""
-    # Collect all topics with their livestream info
-    entries = []
-    # Define keyword categories
-    categories = {
-        '平壓技巧': ['鼓氣', '平壓', 'Mouthfill', 'mouthfill', '橫壓', '點放', '聲門', 'RP', 'FRC', 'RV', '漏氣', '微笑'],
-        '訓練與體能': ['泳池', '深度', 'Freefall', 'freefall', 'MDR', '血液', '無氧', '有氧', '閉氣', '全呼吸', '調息', '超呼吸', '失焦', '冥想'],
-        '課程與學習': ['深度班', 'A3', 'A4', '初階', '進階', 'Packing'],
-        '裝備': ['防寒衣', '蛙鞋', '面鏡', '鼻夾', '裝備'],
-    }
-
-    for meta, topics in all_livestreams:
-        num = meta.get('number', '??')
-        for topic in topics:
-            entries.append({
-                'live': num,
-                'number': topic['number'],
-                'title': topic['title'],
-                'starred': topic['starred'],
-            })
-
-    # Categorize
-    categorized = {cat: [] for cat in categories}
-    uncategorized = []
-
-    for entry in entries:
-        matched = False
-        for cat, keywords in categories.items():
-            for kw in keywords:
-                if kw in entry['title']:
-                    if entry not in categorized[cat]:
-                        categorized[cat].append(entry)
-                    matched = True
-                    break
-        if not matched:
-            uncategorized.append(entry)
-
-    if uncategorized:
-        categorized['其他'] = uncategorized
-
-    # Render
-    html = ''
-    for cat, items in categorized.items():
-        if not items:
-            continue
-        html += f'        <div class="index-category">\n'
-        html += f'          <h4>{cat}</h4>\n'
-        html += '          <div class="index-tags">\n'
-        for item in items:
-            star = ' ⭐' if item['starred'] else ''
-            html += f'            <a class="index-tag" href="#" onclick="jumpToTopic(\'live{item["live"]}\', {item["number"]}); return false;">直播 {item["live"]} #{item["number"]} {item["title"]}{star}</a>\n'
-        html += '          </div>\n'
-        html += '        </div>\n'
-
-    return html
-
-
 def build_search_data(all_livestreams):
     """Build JSON search index."""
     data = []
@@ -272,9 +214,6 @@ def generate_html(all_livestreams):
         render_livestream(meta, topics)
         for meta, topics in all_livestreams
     )
-
-    # Topic index
-    topic_index = build_topic_index(all_livestreams)
 
     # Search data
     search_data = build_search_data(all_livestreams)
@@ -459,48 +398,6 @@ def generate_html(all_livestreams):
     .nav-btn:hover, .nav-btn.active {{
       color: var(--accent);
       border-bottom-color: var(--accent);
-    }}
-
-    /* Topic Index */
-    .topic-index {{
-      padding: 32px 0;
-      border-bottom: 1px solid var(--border);
-    }}
-    .topic-index h3 {{
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--text);
-    }}
-    .index-category {{
-      margin-bottom: 16px;
-    }}
-    .index-category h4 {{
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }}
-    .index-tags {{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }}
-    .index-tag {{
-      display: inline-block;
-      padding: 4px 12px;
-      background: var(--accent-soft);
-      color: var(--tag-text);
-      border-radius: 999px;
-      font-size: 0.8rem;
-      text-decoration: none;
-      transition: background 0.15s;
-      white-space: nowrap;
-    }}
-    .index-tag:hover {{
-      background: rgba(108,140,255,0.2);
     }}
 
     /* Livestream */
@@ -736,18 +633,11 @@ def generate_html(all_livestreams):
   <!-- Nav -->
   <nav class="section-nav">
     <div class="nav-inner">
-      <button class="nav-btn" onclick="showTopicIndex()">📑 主題索引</button>
       {nav_buttons}
     </div>
   </nav>
 
   <main class="container">
-
-    <!-- Topic Index -->
-    <section class="topic-index" id="topicIndex" style="display:none;">
-      <h3>📑 主題索引</h3>
-{topic_index}
-    </section>
 
 {sections}
 
@@ -765,36 +655,9 @@ def generate_html(all_livestreams):
 
     // Scroll to section
     function scrollToSection(id) {{
-      document.getElementById('topicIndex').style.display = 'none';
       document.getElementById(id).scrollIntoView({{ behavior: 'smooth' }});
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       event.target.classList.add('active');
-    }}
-
-    // Show topic index
-    function showTopicIndex() {{
-      const idx = document.getElementById('topicIndex');
-      idx.style.display = idx.style.display === 'none' ? 'block' : 'none';
-      if (idx.style.display === 'block') {{
-        idx.scrollIntoView({{ behavior: 'smooth' }});
-      }}
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-    }}
-
-    // Jump to specific topic
-    function jumpToTopic(liveId, topicNum) {{
-      document.getElementById('topicIndex').style.display = 'none';
-      const section = document.getElementById(liveId);
-      const cards = section.querySelectorAll('.topic-card');
-      const card = cards[topicNum - 1];
-      if (card) {{
-        card.classList.add('open');
-        card.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
-        // Flash effect
-        card.style.borderColor = 'rgba(108,140,255,0.5)';
-        setTimeout(() => card.style.borderColor = '', 1500);
-      }}
     }}
 
     // Search
