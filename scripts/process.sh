@@ -61,9 +61,34 @@ total = len(lines) - 1
 print(f'✅ 繁體化完成: {out_path} ({total} 行)')
 "
 
+# Step 4: 取得影片時長
 echo ""
+echo "⏱  Step 4/4: 取得影片時長..."
+if command -v ffprobe &> /dev/null; then
+  DURATION_SEC=$(ffprobe -v quiet -show_entries format=duration -of csv=p=0 "${OUTDIR}/reel_${NUM}.mp4" | cut -d. -f1)
+  DURATION_MIN=$((DURATION_SEC / 60))
+  echo "✅ 影片時長: 約 ${DURATION_MIN} 分鐘 (${DURATION_SEC} 秒)"
+else
+  DURATION_MIN="?"
+  echo "⚠️  ffprobe 未安裝，跳過時長偵測（可用 brew install ffmpeg 安裝）"
+fi
+
+# Step 5: 分段逐字稿（方便摘要）
+echo ""
+echo "📦 Step 5/5: 分段逐字稿..."
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+python3 "${SCRIPT_DIR}/chunk_transcript.py" "/tmp/reel_${NUM}_clean.txt"
+
+echo ""
+echo "========================================"
 echo "🎉 全部完成！"
+echo "========================================"
+echo ""
+echo "   影片:       ${OUTDIR}/reel_${NUM}.mp4"
 echo "   原始逐字稿: ${OUTDIR}/reel_${NUM}.txt"
 echo "   清理後繁體: /tmp/reel_${NUM}_clean.txt"
+echo "   影片時長:   約 ${DURATION_MIN} 分鐘"
+echo "   分段檔案:   /tmp/reel_${NUM}_clean_chunk*.txt"
 echo ""
-echo "👉 接下來交給 Claude 處理：建 Notion 頁面、做摘要、更新 GitHub Pages"
+echo "👉 接下來交給 Claude："
+echo "   「直播 ${NUM} 的逐字稿好了，在 /tmp/reel_${NUM}_clean.txt，時長約 ${DURATION_MIN} 分鐘」"
