@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xyuan 教練直播筆記｜Mouthfill 自由潛水</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-hover: #222636;
+      --card: #1e2230;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e8ed;
+      --text-secondary: #9ca3b0;
+      --accent: #6c8cff;
+      --accent-soft: rgba(108,140,255,0.12);
+      --accent-glow: rgba(108,140,255,0.25);
+      --star: #fbbf24;
+      --tag-bg: rgba(108,140,255,0.1);
+      --tag-text: #8aa4ff;
+      --green: #34d399;
+      --green-bg: rgba(52,211,153,0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 80px 24px 60px;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(160deg, #151828 0%, #0f1117 50%, #141825 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .hero h1 .accent { color: var(--accent); }
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero .meta-badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .badge a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .badge a:hover { text-decoration: underline; }
+
+    /* Container */
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Section Nav */
+    .section-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15,17,23,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+    }
+    .section-nav .container {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .section-nav .container::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      padding: 14px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Livestream Section */
+    .livestream {
+      padding: 48px 0;
+    }
+    .livestream + .livestream {
+      border-top: 1px solid var(--border);
+    }
+
+    .ls-header {
+      margin-bottom: 32px;
+    }
+    .ls-number {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .ls-header h2 {
+      font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .ls-meta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .ls-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Topic Cards */
+    .topic-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .topic-card:hover {
+      border-color: rgba(108,140,255,0.15);
+    }
+    .topic-card.starred {
+      border-color: rgba(251,191,36,0.2);
+    }
+    .topic-card.starred .topic-header {
+      background: rgba(251,191,36,0.04);
+    }
+
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .topic-header:hover {
+      background: var(--surface-hover);
+    }
+    .topic-number {
+      flex-shrink: 0;
+      width: 30px; height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .topic-card.starred .topic-number {
+      background: rgba(251,191,36,0.12);
+      color: var(--star);
+    }
+    .topic-title {
+      flex: 1;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .star-badge {
+      font-size: 0.7rem;
+      color: var(--star);
+      background: rgba(251,191,36,0.1);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .chevron {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      color: var(--text-secondary);
+      transition: transform 0.25s;
+    }
+    .topic-card.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .topic-body {
+      display: none;
+      padding: 0 20px 20px 62px;
+    }
+    .topic-card.open .topic-body {
+      display: block;
+    }
+
+    .topic-body ul {
+      list-style: none;
+      padding: 0;
+    }
+    .topic-body li {
+      position: relative;
+      padding: 4px 0 4px 16px;
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .topic-body li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 13px;
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    .topic-body li ul {
+      margin-top: 2px;
+    }
+    .topic-body li li {
+      padding-left: 16px;
+      font-size: 0.87rem;
+      color: var(--text-secondary);
+    }
+    .topic-body li li::before {
+      width: 4px; height: 4px;
+      background: var(--text-secondary);
+      opacity: 0.3;
+    }
+    .topic-body strong {
+      color: #fff;
+      font-weight: 600;
+    }
+    .topic-body h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 12px 0 6px;
+    }
+    .topic-body h4:first-child { margin-top: 0; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero { padding: 60px 20px 40px; }
+      .topic-body { padding-left: 20px; }
+      .topic-header { padding: 14px 16px; }
+      .nav-btn { padding: 12px 14px; font-size: 0.85rem; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* Animations */
+    .topic-card { animation: fadeUp 0.4s ease both; }
+    .topic-card:nth-child(2) { animation-delay: 0.05s; }
+    .topic-card:nth-child(3) { animation-delay: 0.1s; }
+    .topic-card:nth-child(4) { animation-delay: 0.15s; }
+    .topic-card:nth-child(5) { animation-delay: 0.2s; }
+    .topic-card:nth-child(6) { animation-delay: 0.25s; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <h1>🤿 <span class="accent">xyuan</span> 教練直播筆記</h1>
+    <p class="subtitle">陳志璿｜Mouthfill 自由潛水 QA 精華整理</p>
+    <div class="meta-badges">
+      <span class="badge">🎙️ 2 場直播</span>
+      <span class="badge">📷 <a href="https://www.instagram.com/xyuannnnn" target="_blank">@xyuannnnn</a></span>
+      <span class="badge">✏️ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></span>
+    </div>
+  </header>
+
+  <!-- Sticky Nav -->
+  <nav class="section-nav">
+    <div class="container">
+      <button class="nav-btn active" onclick="scrollToSection('live01')">直播 01</button>
+      <button class="nav-btn" onclick="scrollToSection('live02')">直播 02</button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===== 直播 01 ===== -->
+    <section class="livestream" id="live01">
+      <div class="ls-header">
+        <span class="ls-number">直播 01</span>
+        <h2>鼓氣底層邏輯、泳池vs深度互補互斥、Mouthfill效率、深度班建議、裝備推薦</h2>
+        <div class="ls-meta">
+          <span>⏱ 約 70 分鐘</span>
+          <span>💬 Mouthfill 直播 QA</span>
+        </div>
+      </div>
+
+      <!-- 1 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">1</span>
+          <span class="topic-title">防寒衣推薦</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>Mobby's</strong> open cell 款可做高腰，暖到爆（約一萬七八）；雙滑面款也讚但容易破</li>
+            <li><strong>Power Stretch 材質</strong>（PolarTech 支線）：四向彈性、外層超防磨、內層刷毛
+              <ul>
+                <li>最大特點：下水出來約 <strong>5 分鐘內層全乾</strong>，解決濕冷問題</li>
+                <li>有做褲子、衣服、頭套、手套，上衣褲子約 3000 多，頭套 1000 多</li>
+                <li>教練本人潛水後脫防寒衣直接穿這個，大家在抖他還覺得熱</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">2</span>
+          <span class="topic-title">Freefall（不戴面鏡用鼻夾）</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>多練 free fall，但氮醉仍可能影響</li>
+            <li>建議不要暖身下潛</li>
+            <li>攀繩項目可 overweight（配重配重一點）</li>
+            <li>請人幫忙錄影來檢視</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">3</span>
+          <span class="topic-title">氣管緊緊的問題（接近 RV）</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>胸口均勻的緊 → 正常，多拉伸</li>
+            <li>氣管／喉嚨緊 → 檢查平壓，可能 RP 不夠好</li>
+            <li>接近 30 還在用 RP → <strong>該練 Mouthfill 了</strong></li>
+            <li><strong>不建議縮身體</strong>：身體縮會讓橫膈膜起不來，身體不要鎖自己就會起來</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4 ⭐ -->
+      <div class="topic-card starred">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">4</span>
+          <span class="topic-title">鼓氣的底層邏輯</span>
+          <span class="star-badge">⭐ 重點</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>底層邏輯 = 肚子要用力</strong></li>
+            <li>柏鈞的觀察法：觀察鼓氣時肚子是往外凸（錯誤）還是往內縮（正確）</li>
+            <li>教練自己的觀察法：聽聲音 + 看脖子，判斷空氣是「拉出來的」還是「推出來的」</li>
+            <li>兩種觀察法其實在講同一件事 → 正確的肚子用力方式</li>
+            <li>就算直播講得再詳細，光看影片還是容易練錯，建議實際上課</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">5</span>
+          <span class="topic-title">泳池 vs 深度：互補與互斥</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <h4>泳池幫助深度</h4>
+          <ul>
+            <li>閉氣能力對深度很有用，練泳池後下深度閉氣進步超多</li>
+          </ul>
+          <h4>深度不幫助泳池</h4>
+          <ul>
+            <li>深度選手超放鬆、不做各種鎖（胸鎖、舌鎖等）</li>
+            <li>去泳池抽動會非常失控、不適應</li>
+            <li>深度的抽動有水壓頂著橫膈膜 + 氧分壓高，感覺不明顯</li>
+            <li>泳池的抽動是飽滿的，深度是空的感覺</li>
+          </ul>
+          <h4>兩者無法同時頂尖</h4>
+          <ul>
+            <li>Marella（前奧運游泳銅牌、女子泳池前世界紀錄）也說不可能同一賽季兩個都超強</li>
+            <li>夾臂：泳池要夾超緊幫助鎖，深度 free fall 時手放下來</li>
+            <li>David Carrera：唯一夾臂 freefall 的人，freefall 速度 1.4-1.5 m/s，超變態</li>
+          </ul>
+          <h4>失焦（冥想）的重要性</h4>
+          <ul>
+            <li>許揚的例子：靠放鬆 + 失焦，泳池閉氣從 60 → 130 → 175（穿 Leader Fin、女生）</li>
+            <li>極度專注進入心流 = 一種冥想</li>
+            <li>下深度時眼睛在聚焦與失焦之間來回：聚焦對方向、檢查空氣；失焦提醒放鬆</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">6</span>
+          <span class="topic-title">Mouthfill 效率計算</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>效率 = 鼓一口氣能用到的大氣壓倍數</strong>
+              <ul>
+                <li>例：水面鼓一口用到 13 米（2.3 atm）→ 效率 2.3 倍</li>
+                <li>10 米鼓（2 atm）× 效率 2.3 = 4.6 atm → 可用到約 36 米</li>
+              </ul>
+            </li>
+            <li><strong>陷阱：有人說水面鼓可以用到 20 米</strong>
+              <ul>
+                <li>PB 六七十以上 → 真的超強</li>
+                <li>PB 三十五到四十 → 其實一直在偷提氣（RP）而不自知</li>
+              </ul>
+            </li>
+            <li>學生說水面鼓用到 10 米 → 反而是好答案，代表沒在偷提氣</li>
+            <li>水面鼓用到 14-15 米就算及格</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">7</span>
+          <span class="topic-title">深度班 vs A3</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <h4>深度班（3 天）</h4>
+          <ul>
+            <li>最適合 PB 25-28 的人，甚至 20 米來最好</li>
+            <li>全程練平壓（陸地 + 水下），教練盯著你的臉三天</li>
+            <li>課前一個月會視訊</li>
+            <li>下的比 A3 還淺（15 米以內練好再說）</li>
+            <li>不用擔心能力不足</li>
+          </ul>
+          <h4>為什麼 25-28 最適合</h4>
+          <ul>
+            <li>還沒用 RP 下超過 30，不會有奇怪習慣</li>
+            <li>RP 跟 Mouthfill 根本上互相衝突：RP 一直開聲門，Mouthfill 要聲門不動</li>
+          </ul>
+          <h4>A3</h4>
+          <ul>
+            <li>學科講十幾個小時，很多重要學科</li>
+            <li>重點：放鬆的下潛、找到自由潛水的快樂、認識自己</li>
+            <li>會讓學生下到 25-30 米</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">8</span>
+          <span class="topic-title">FRC/RV vs 實際深度的 Mouthfill 差異</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>FRC/RV 下的終究是十幾二十米 → 心理壓力不大</li>
+            <li>FRC/RV 時鼓氣可能是正確的（肚子推），實際深度可能變成用拉的</li>
+            <li>教練自己也有未解之謎：FRC/RV 不會受傷，但下深度同樣的緊卻會受傷</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">9</span>
+          <span class="topic-title">MDR 後血液轉移的肌肉無力感</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>解法：練無氧系統（Tabata、伏地挺身、深蹲硬舉、短跑等）</li>
+            <li>有一說法：動態項目不練有氧，因為有氧系統消耗氧氣</li>
+            <li>有氧系統增加微血管分佈，對靜態閉氣有幫助</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">10</span>
+          <span class="topic-title">蛙鞋裝備推薦</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>最推</strong>：Pro Blue 腳套 + 3D Jaws（已停產，只能找二手）</li>
+            <li><strong>替代</strong>：Official Secret 新款系列</li>
+            <li>比賽用：TARAS</li>
+            <li><strong>重點原則</strong>：買最軟的、推開腳跟的款式</li>
+            <li>踢法：小幅度輕輕踢（大幅度踢法已過時）</li>
+            <li>Majestic 太硬 → 鐵腿鞋，換掉就好</li>
+            <li>蛙鞋不要買太長</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 11 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">11</span>
+          <span class="topic-title">其他</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>抽菸的二氧化碳分壓會高一點（正常人 35-45 mmHg）</li>
+            <li>爬百岳三天回來肺活量從 5800 → 6100（高原訓練效果）</li>
+            <li>推薦 Tina 的 YT「潛入心流」：講述教練從 A2 到 100 米的血淚歷程</li>
+            <li>RP 靠天分，沒有一套方法可以教好安全的 RP 下潛；Mouthfill 有一套方法可以教好</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===== 直播 02 ===== -->
+    <section class="livestream" id="live02">
+      <div class="ls-header">
+        <span class="ls-number">直播 02</span>
+        <h2>鼓氣問題（舌根夾上去）、不鎖聲門、橫壓vs點放、漏氣練習／微笑平壓</h2>
+        <div class="ls-meta">
+          <span>⏱ 約 76 分鐘</span>
+          <span>💬 Mouthfill 直播 QA</span>
+        </div>
+      </div>
+
+      <!-- 1 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">1</span>
+          <span class="topic-title">調息與超呼吸</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>慢吸慢吐可以，但<strong>出氣量要有控制</strong>，嘴巴開口不能太大</li>
+            <li>腹式呼吸調息可以避免超呼吸（AIDA A2 教材就有），但直接說「不要慢吸慢吐」更簡單易懂</li>
+            <li>咬呼吸管很容易超呼吸，因為出口大小無法限制</li>
+            <li>判斷有沒有超呼吸：聽呼吸管的出氣聲，超大聲又超快 = 超呼吸</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2 ⭐ -->
+      <div class="topic-card starred">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">2</span>
+          <span class="topic-title">鼓氣後喉嚨縮上去的問題</span>
+          <span class="star-badge">⭐ 重點</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>鼓氣有兩種樣態：
+              <ul>
+                <li>✅ 正確：鼓完後後側放鬆、蓬蓬的</li>
+                <li>❌ 錯誤：鼓完後舌跟喉嚨縮上去，後面空空的</li>
+              </ul>
+            </li>
+            <li>後面空空的會造成超多問題：海豚音、想要 RP、漏氣、平壓要擠很大力</li>
+            <li><strong>根源問題：舌根被夾上去了</strong>
+              <ul>
+                <li>舌根後面緊繃 → 想要後面有東西平 → 去抽空氣出來 → 就是 RP</li>
+                <li>這是很多人 Mouthfill 做不好的根本原因</li>
+              </ul>
+            </li>
+            <li>解決方向：鼓氣時下放下巴與舌頭，讓後側保持放鬆，空氣才進得去</li>
+            <li>可以試：鼓一口氣放前面，然後往後移，感受後面的空間</li>
+            <li>注意：不是要刻意往下拉，而是空氣自然撐開的壓力 + 臉稍微往後擠</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">3</span>
+          <span class="topic-title">更深的 Mouthfill vs 鼓更多的氣</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>先把氣鼓對</strong>才是最重要的</li>
+            <li>如果鼓氣正確的前提下：教練偏好<strong>深一點鼓但不鼓滿</strong>
+              <ul>
+                <li>鼓太滿很不舒服，第一步還要先漏掉一些</li>
+                <li>不如晚一點鼓、不要鼓那麼滿</li>
+              </ul>
+            </li>
+            <li>教練自己：30 米鼓，33 米補一點</li>
+            <li>華揚：約 20 米鼓滿，25 米灌到最滿，可以用到 120</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4 ⭐ -->
+      <div class="topic-card starred">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">4</span>
+          <span class="topic-title">聲門不要鎖</span>
+          <span class="star-badge">⭐ 重點</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>絕對不要鎖聲門</strong></li>
+            <li>簡單測試：不捏鼻子直接鼓嘴巴，所有人都做得到 → 聲門自己就會關好</li>
+            <li>就算吐到 RV、胸腔負壓，還是可以輕鬆把氣放嘴巴裡</li>
+            <li><strong>警示案例</strong>：有人被教練教鎖聲門，用力鎖了一週後聲帶鬆掉，氣會從聲門漏下去，最後去打玻尿酸才恢復</li>
+            <li>守空氣最重要的地方是<strong>舌根後面喉嚨上方</strong>，靠的是舌頭，絕對不是聲門</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">5</span>
+          <span class="topic-title">聲門漏氣的幾種樣態</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li><strong>海豚音</strong>：舌根太用力 → 回到鼓氣後喉嚨縮上去的問題</li>
+            <li><strong>開聲門想抽空氣（RP）</strong>：聲門一開，嘴巴的氣全部跑下去</li>
+            <li>解決方法：練好<strong>微笑平壓</strong>與<strong>漏氣練習</strong>（參考第一集直播）</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">6</span>
+          <span class="topic-title">橫壓 vs 點放</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <h4>橫壓（持續加壓）</h4>
+          <ul>
+            <li>易學難精</li>
+            <li>優點：不用放鬆重推，不會想要 RP，新手前段很容易有感覺</li>
+            <li>難點：
+              <ul>
+                <li>臉擠完要轉到舌頭超難</li>
+                <li>耳咽管一直開著沒有平壓聲 → 沒安全感 → 擠超大力 → 浪費力氣 + 喉嚨不舒服</li>
+                <li>橫壓大師可以只用 10 的力量讓耳咽管一直開著，但大部分人擠到 70-80</li>
+              </ul>
+            </li>
+            <li>適合：只想到 40 米的話，臉橫壓就夠了</li>
+          </ul>
+          <h4>點放</h4>
+          <ul>
+            <li>難學但舒服</li>
+            <li>難點：放鬆重推時會想要 RP，要先改掉 RP 的習慣</li>
+            <li>精髓：<strong>每一下平壓都要從完全不用力的位置直接推上去</strong>
+              <ul>
+                <li>推完後臉跟喉嚨回到完全沒在用力的位置</li>
+              </ul>
+            </li>
+            <li>教練偏好點放</li>
+            <li>教練在下 60 米時的點放看起來跟在陸地上一模一樣</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">7</span>
+          <span class="topic-title">漏氣練習與微笑平壓</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>超重要，跟橫壓跟點放都有關係</li>
+            <li>練好這兩個，Mouthfill 都不會太差</li>
+            <li>微笑平壓 = 點放的感覺</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">8</span>
+          <span class="topic-title">漏氣練習的新教法</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>鼓最大 → 整口漏掉</li>
+            <li>鼓中間的量（60-70%）→ 整口漏掉</li>
+            <li>鼓少少的 → 整口漏掉</li>
+            <li>每一下鼓起來後，先確定後面是放鬆的、有空間的，然後直接送上去</li>
+            <li>這就是 Mouthfill 要的樣子：空氣多/中/少都能擠，結合點放 + 每下從最放鬆位置推上去</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">9</span>
+          <span class="topic-title">面鏡平壓</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>Mouthfill 過後<strong>絕對不要把整隻手放開</strong>，不要露出鼻孔</li>
+            <li>鼻孔只能是一個小縫，跟漏氣練習一模一樣</li>
+            <li><strong>漏氣練習就是一種面鏡平壓</strong></li>
+            <li>不用追求讓面鏡很緊來省空氣，Mouthfill 做得好就很夠用</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">10</span>
+          <span class="topic-title">初階 vs 進階學生</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>很多 A3 學生想上 A4，教練全部推掉</li>
+            <li>建議：先好好玩一陣子水，建立好的習慣跟心態再上下一階</li>
+            <li>反例：有學生 A2 三天 + A3 四天就去上 A4，直接炸掉</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 11 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">11</span>
+          <span class="topic-title">全呼吸</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>判斷有沒有吸飽：吸飽後如果還能講話 → 沒吸飽；要噴一口氣才能講話 → 才是吸飽</li>
+            <li>全呼吸要胸椎挑直，有<strong>垂直向擴張</strong>（很多人忽略）+ 橫向擴張</li>
+            <li>最後可以加一點點抬頭</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 12 -->
+      <div class="topic-card">
+        <div class="topic-header" onclick="toggle(this)">
+          <span class="topic-number">12</span>
+          <span class="topic-title">其他</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="topic-body">
+          <ul>
+            <li>教練教了破百人的 Mouthfill，幾乎找不出兩個一模一樣的問題</li>
+            <li>不再教軟顎開關的氣球練習</li>
+            <li>卡在 29-32 是正常的，因為 30 米就 RV 了</li>
+            <li>看每個人鼓完氣後的樣子，就大概知道他會有什麼問題</li>
+            <li>A4 教的是 Packing，不是 RP（RP 是所有人天生都會的）</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>內容來源：<a href="https://www.instagram.com/xyuannnnn" target="_blank">@xyuannnnn</a> IG 直播 ｜ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
+  </footer>
+
+  <script>
+    function toggle(header) {
+      const card = header.parentElement;
+      card.classList.toggle('open');
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Update nav on scroll
+    const sections = document.querySelectorAll('.livestream');
+    const navBtns = document.querySelectorAll('.nav-btn');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 80;
+        if (scrollY >= top) current = section.id;
+      });
+      navBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick').includes(current)) btn.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
