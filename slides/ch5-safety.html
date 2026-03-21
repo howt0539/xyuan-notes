@@ -46,6 +46,8 @@
       flex-direction: column;
       justify-content: center;
       padding: 60px 80px;
+      padding-bottom: 100px;
+      overflow-y: auto;
       animation: fadeIn 0.4s ease;
     }
     .slide.active { display: flex; }
@@ -313,7 +315,7 @@
     }
 
     @media (max-width: 900px) {
-      .slide { padding: 40px 24px; }
+      .slide { padding: 40px 24px; padding-bottom: 120px; }
       .slide-cover h1 { font-size: 2rem; }
       .slide-title { font-size: 1.4rem; }
       .cards.cols-3 { grid-template-columns: 1fr; }
@@ -638,6 +640,7 @@
 
 <!-- Navigation -->
 <div class="nav">
+  <a href="index.html" style="font-size:0.85rem;color:var(--text-secondary);text-decoration:none;display:flex;align-items:center;gap:4px;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">← 章節</a>
   <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← 上一頁</button>
   <div style="text-align:center">
     <span class="nav-progress" id="pageNum">1 / 12</span>

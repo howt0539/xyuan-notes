@@ -10,7 +10,7 @@ import glob
 import json
 
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), '..', 'content')
-OUTPUT_FILE = os.path.join(os.path.dirname(__file__), '..', 'index.html')
+OUTPUT_FILE = os.path.join(os.path.dirname(__file__), '..', 'notes.html')
 TOPICS_FILE = os.path.join(CONTENT_DIR, 'topics.json')
 
 
