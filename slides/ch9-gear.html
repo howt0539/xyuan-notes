@@ -316,7 +316,9 @@
     }
 
     @media (max-width: 900px) {
-      .slide { padding: 60px 24px; padding-top: calc(80px + env(safe-area-inset-top)); padding-bottom: calc(200px + env(safe-area-inset-bottom)); justify-content: flex-start; min-height: calc(100vh + 50px); }
+      body { overflow: auto; height: auto; }
+      .deck { height: auto; min-height: 100vh; }
+      .slide { position: relative; inset: auto; padding: 60px 24px; padding-top: calc(80px + env(safe-area-inset-top)); padding-bottom: calc(200px + env(safe-area-inset-bottom)); justify-content: flex-start; min-height: 100vh; }
       .slide-cover h1 { font-size: 2rem; }
       .slide-title { font-size: 1.4rem; }
       .cards.cols-3 { grid-template-columns: 1fr; }
