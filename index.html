@@ -161,8 +161,24 @@
       scrollbar-width: none;
     }
     .section-nav .nav-inner::-webkit-scrollbar { display: none; }
+    .nav-year {
+      padding: 14px 8px 14px 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      align-self: center;
+    }
+    .nav-divider {
+      width: 1px;
+      background: var(--border);
+      margin: 10px 4px;
+      flex-shrink: 0;
+    }
     .nav-btn {
-      padding: 14px 20px;
+      padding: 14px 14px;
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--text-secondary);
@@ -411,15 +427,18 @@
   <!-- Nav -->
   <nav class="section-nav">
     <div class="nav-inner">
-      <button class="nav-btn active" onclick="scrollToSection('live2025-11-24')">直播 2025-11-24</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-11-25')">直播 2025-11-25</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-11-30')">直播 2025-11-30</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-12-03')">直播 2025-12-03</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-12-08')">直播 2025-12-08</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-12-15')">直播 2025-12-15</button>
-      <button class="nav-btn" onclick="scrollToSection('live2025-12-28')">直播 2025-12-28</button>
-      <button class="nav-btn" onclick="scrollToSection('live2026-02-04')">直播 2026-02-04</button>
-      <button class="nav-btn" onclick="scrollToSection('live2026-03-12')">直播 2026-03-12</button>
+      <span class="nav-year">2025</span>
+      <button class="nav-btn active" onclick="scrollToSection('live2025-11-24')" title="直播 2025-11-24">11/24</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-11-25')" title="直播 2025-11-25">11/25</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-11-30')" title="直播 2025-11-30">11/30</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-12-03')" title="直播 2025-12-03">12/3</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-12-08')" title="直播 2025-12-08">12/8</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-12-15')" title="直播 2025-12-15">12/15</button>
+      <button class="nav-btn" onclick="scrollToSection('live2025-12-28')" title="直播 2025-12-28">12/28</button>
+      <span class="nav-divider"></span>
+      <span class="nav-year">2026</span>
+      <button class="nav-btn" onclick="scrollToSection('live2026-02-04')" title="直播 2026-02-04">2/4</button>
+      <button class="nav-btn" onclick="scrollToSection('live2026-03-12')" title="直播 2026-03-12">3/12</button>
     </div>
   </nav>
 
@@ -2901,9 +2920,10 @@
       info.style.display = 'block';
     }
 
-    // Update nav on scroll
+    // Update nav on scroll + auto-scroll nav to active button
     const sections = document.querySelectorAll('.livestream');
     const navBtns = document.querySelectorAll('.nav-btn');
+    const navInner = document.querySelector('.nav-inner');
     window.addEventListener('scroll', () => {
       let current = '';
       sections.forEach(section => {
@@ -2913,7 +2933,15 @@
       navBtns.forEach(btn => {
         btn.classList.remove('active');
         const onclick = btn.getAttribute('onclick') || '';
-        if (onclick.includes(current) && current) btn.classList.add('active');
+        if (onclick.includes(current) && current) {
+          btn.classList.add('active');
+          // Auto-scroll nav to keep active button visible
+          const navRect = navInner.getBoundingClientRect();
+          const btnRect = btn.getBoundingClientRect();
+          if (btnRect.left < navRect.left || btnRect.right > navRect.right) {
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }
       });
     });
   </script>
