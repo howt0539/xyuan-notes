@@ -177,28 +177,44 @@ def render_livestream(meta, topics):
 
 
 def render_category_sections(all_livestreams, topics_data):
-    """Render topics grouped by category."""
+    """Render topics grouped by category, ordered by teaching logic."""
     categories = topics_data['categories']
     icons = topics_data.get('category_icons', {})
     topic_map = topics_data['topics']
+    category_order = topics_data.get('category_order', {})
 
-    # Collect topics per category
-    cat_topics = {cat: [] for cat in categories}
-
+    # Build lookup: (date, topic_number) -> (topic, short_date)
+    topic_lookup = {}
     for meta, topics in all_livestreams:
         num = meta.get('number', '??')
-        date_key = num  # e.g. "2025-11-24"
-        mapping = topic_map.get(date_key, {})
+        parts = num.split('-')
+        short = f'{int(parts[1])}/{int(parts[2])}' if len(parts) >= 3 else num
+        for topic in topics:
+            topic_lookup[(num, topic['number'])] = (topic, short)
+
+    # Collect topics per category (unordered fallback)
+    cat_topics_fallback = {cat: [] for cat in categories}
+    for meta, topics in all_livestreams:
+        num = meta.get('number', '??')
+        mapping = topic_map.get(num, {})
+        parts = num.split('-')
+        short = f'{int(parts[1])}/{int(parts[2])}' if len(parts) >= 3 else num
         for topic in topics:
             cat = mapping.get(topic['number'], '裝備與其他')
-            # Format short date for source label
-            parts = date_key.split('-')
-            short = f'{int(parts[1])}/{int(parts[2])}' if len(parts) >= 3 else date_key
-            cat_topics[cat].append((topic, short))
+            cat_topics_fallback[cat].append((topic, short))
 
     html_parts = []
     for cat in categories:
-        items = cat_topics[cat]
+        # Use explicit order if available, otherwise fallback to chronological
+        if cat in category_order:
+            items = []
+            for date_key, topic_num in category_order[cat]:
+                entry = topic_lookup.get((date_key, topic_num))
+                if entry:
+                    items.append(entry)
+        else:
+            items = cat_topics_fallback[cat]
+
         if not items:
             continue
         icon = icons.get(cat, '')
