@@ -1,12 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#c4713b"/>
-      <stop offset="100%" stop-color="#a85a2a"/>
-    </linearGradient>
-  </defs>
-  <!-- Water drop -->
-  <path d="M16 3 C16 3 6 15 6 21 C6 26.5 10.5 29 16 29 C21.5 29 26 26.5 26 21 C26 15 16 3 16 3Z" fill="url(#g)"/>
-  <!-- Inner highlight -->
-  <ellipse cx="12.5" cy="19" rx="2.5" ry="4" fill="#d4915b" opacity="0.4"/>
+  <!-- Freediver silhouette - head-down streamlined position -->
+  <g fill="#A67B5B">
+    <!-- Head -->
+    <circle cx="16" cy="4.5" r="2.8"/>
+    <!-- Neck + Torso -->
+    <path d="M13.8,7 Q13.5,8.5 13.7,11 L14,15.5 Q14.1,17 14.5,18 L17.5,18 Q17.9,17 18,15.5 L18.3,11 Q18.5,8.5 18.2,7 Z"/>
+    <!-- Left arm along body -->
+    <path d="M13.8,9.5 Q12.2,10.2 11.2,11.5 Q10.6,12.2 10.9,12.8 Q11.4,12.2 12.5,11.2 Q13.5,10.5 14.2,10.8" opacity="0.9"/>
+    <!-- Right arm along body -->
+    <path d="M18.2,9.5 Q19.8,10.2 20.8,11.5 Q21.4,12.2 21.1,12.8 Q20.6,12.2 19.5,11.2 Q18.5,10.5 17.8,10.8" opacity="0.9"/>
+    <!-- Legs - together, straight -->
+    <path d="M14.3,17.5 L14,22.5 Q13.9,24 14.2,24.5 L17.8,24.5 Q18.1,24 18,22.5 L17.7,17.5 Z"/>
+    <!-- Left fin -->
+    <path d="M14.2,24 Q12.5,26 11,28 Q10,29.2 10.5,29.8 Q11.2,29.3 13,27 Q14,25.8 14.8,24.8 Z"/>
+    <!-- Right fin -->
+    <path d="M17.8,24 Q19.5,26 21,28 Q22,29.2 21.5,29.8 Q20.8,29.3 19,27 Q18,25.8 17.2,24.8 Z"/>
+  </g>
 </svg>
