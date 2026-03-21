@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ch.7 心態與成長｜自由潛水教材系列</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="../fonts/noto-sans-tc-local.css" rel="stylesheet">
   <style>
     :root {
       --bg: #D5CEC6;
@@ -316,7 +316,7 @@
     }
 
     @media (max-width: 900px) {
-      .slide { padding: 60px 24px; padding-top: calc(80px + env(safe-area-inset-top)); padding-bottom: 180px; justify-content: flex-start; }
+      .slide { padding: 60px 24px; padding-top: calc(80px + env(safe-area-inset-top)); padding-bottom: calc(200px + env(safe-area-inset-bottom)); justify-content: flex-start; min-height: calc(100vh + 50px); }
       .slide-cover h1 { font-size: 2rem; }
       .slide-title { font-size: 1.4rem; }
       .cards.cols-3 { grid-template-columns: 1fr; }
