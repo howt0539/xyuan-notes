@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>練習手冊 — 自由潛水 Mouthfill 練習指引</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5efe6;
+      --surface: #f0ebe3;
+      --card: #fffcf7;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #8B4513;
+      --accent-soft: rgba(139,69,19,0.08);
+      --secondary: #d4a574;
+      --secondary-soft: rgba(212,165,116,0.15);
+      --green: #5a7a5c;
+      --green-soft: rgba(90,122,92,0.1);
+      --highlight: #e8a854;
+      --radius: 14px;
+      --nav-height: 52px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* === Sticky Nav === */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,239,230,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .top-bar-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      height: var(--nav-height);
+    }
+    .back-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .nav-scroll {
+      flex: 1;
+      overflow-x: auto;
+      display: flex;
+      gap: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-scroll::-webkit-scrollbar { display: none; }
+    .nav-scroll a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav-scroll a:hover,
+    .nav-scroll a.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* === Page Header === */
+    .page-hero {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      padding: 60px 24px 48px;
+    }
+    .page-hero h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .page-hero p {
+      font-size: 1rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+
+    /* === Main Content === */
+    .content {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 32px 20px 120px;
+    }
+
+    /* === Section Card === */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      margin-bottom: 28px;
+      overflow: hidden;
+      scroll-margin-top: calc(var(--nav-height) + 16px);
+    }
+    .section-header {
+      background: linear-gradient(135deg, var(--accent-soft), var(--secondary-soft));
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .section-num {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .section-body { padding: 24px; }
+
+    /* === Sub-headings === */
+    .sub-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 24px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sub-title:first-child { margin-top: 0; }
+    .sub-title .icon { font-size: 1.1rem; }
+
+    /* === Steps === */
+    .steps {
+      list-style: none;
+      counter-reset: step;
+      padding: 0;
+    }
+    .steps li {
+      counter-increment: step;
+      padding: 8px 0 8px 40px;
+      position: relative;
+      border-left: 2px solid var(--secondary-soft);
+      margin-left: 14px;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: -15px;
+      top: 7px;
+      width: 28px; height: 28px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .steps li:last-child { border-left-color: transparent; }
+
+    /* === Self-check === */
+    .check-list {
+      list-style: none;
+      padding: 0;
+    }
+    .check-list li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      color: var(--text);
+    }
+    .check-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 2px;
+      top: 6px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* === Mistake Table === */
+    .mistake-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+    .mistake-table thead th {
+      background: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .mistake-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .mistake-table thead th:last-child { border-radius: 0 8px 0 0; }
+    .mistake-table tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: top;
+    }
+    .mistake-table tbody tr:last-child td { border-bottom: none; }
+    .mistake-table tbody td:first-child {
+      color: #b44;
+      font-weight: 500;
+    }
+    .mistake-table tbody td:last-child {
+      color: var(--green);
+      font-weight: 500;
+    }
+    .mistake-table tbody tr:nth-child(even) { background: var(--surface); }
+
+    /* === Feature comparison table === */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+    .compare-table thead th {
+      background: var(--secondary);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .compare-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table thead th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .compare-table tbody tr:nth-child(even) { background: var(--surface); }
+    .compare-table tbody tr:last-child td { border-bottom: none; }
+
+    /* === Info box === */
+    .info-box {
+      background: var(--green-soft);
+      border-left: 3px solid var(--green);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .info-box.warn {
+      background: rgba(232,168,84,0.12);
+      border-left-color: var(--highlight);
+    }
+    .info-box.danger {
+      background: rgba(180,68,68,0.08);
+      border-left-color: #b44;
+    }
+    .info-box strong { color: var(--accent); }
+
+    /* === Advanced sub-steps === */
+    .adv-steps {
+      list-style: none;
+      padding: 0;
+    }
+    .adv-steps li {
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+    .adv-steps li::before {
+      content: '▸';
+      position: absolute;
+      left: 2px;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    /* === Back to Top === */
+    .back-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 46px; height: 46px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(139,69,19,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.3s;
+      z-index: 99;
+    }
+    .back-top.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .back-top:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(139,69,19,0.4);
+    }
+
+    /* === Responsive === */
+    @media (max-width: 600px) {
+      .page-hero { padding: 48px 20px 36px; }
+      .page-hero h1 { font-size: 1.6rem; }
+      .section-body { padding: 18px 16px; }
+      .section-header { padding: 16px; }
+      .section-header h2 { font-size: 1.1rem; }
+      .mistake-table, .compare-table { font-size: 0.82rem; }
+      .mistake-table thead th, .compare-table thead th { padding: 8px 10px; }
+      .mistake-table tbody td, .compare-table tbody td { padding: 8px 10px; }
+      .back-top { bottom: 20px; right: 16px; width: 42px; height: 42px; }
+      .nav-scroll a { font-size: 0.74rem; padding: 5px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sticky Nav -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <a href="index.html" class="back-link">← 章節</a>
+    <div class="nav-scroll">
+      <a href="#s1">漏氣練習</a>
+      <a href="#s2">微笑平壓</a>
+      <a href="#s3">開軟顎</a>
+      <a href="#s4">MF鼓氣</a>
+      <a href="#s5">調息</a>
+      <a href="#s6">空氣轉換</a>
+      <a href="#s7">胸腔拉伸</a>
+      <a href="#s8">身體中立</a>
+      <a href="#s9">舌位判斷</a>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="page-hero">
+  <h1>練習手冊</h1>
+  <p>自由潛水 Mouthfill 練習指引</p>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- ====== 1. 漏氣練習 ====== -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>漏氣練習</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 步驟</div>
+      <ol class="steps">
+        <li>嘴巴輕輕鼓起來（臉頰要有東西），不要很用力</li>
+        <li>鼓氣時鼻子要先捏起來</li>
+        <li>捏鼻子 → 讓氣從鼻子小縫漏出去</li>
+        <li>手不要整個放掉，只露一個小縫</li>
+        <li>發出類似氣球洩氣的聲音</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>鼓起來時下巴下方（頦下）也會膨起來</li>
+        <li>漏氣時臉和頦下要「同時消」</li>
+        <li>感受發力位置：臉、舌頭前後、喉嚨附近</li>
+        <li>喉嚨附近的感知最重要</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>沒捏鼻子就鼓氣</td><td>鼓氣一定要捏鼻子</td></tr>
+          <tr><td>鼻子整隻手放開</td><td>只露小縫，放開會讓軟顎鎖起來</td></tr>
+          <tr><td>鼓太用力</td><td>輕輕鬆鬆讓它膨起來</td></tr>
+          <tr><td>喉頭被夾在高位</td><td>喉頭應有明顯上下移動</td></tr>
+          <tr><td>臉消了但頦下沒消</td><td>兩個要同時消</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-title"><span class="icon">🎯</span> 進階：三階段氣量</div>
+      <ul class="adv-steps">
+        <li>鼓最大 → 整口漏掉</li>
+        <li>鼓中間 60-70% → 整口漏掉</li>
+        <li>鼓少少 → 整口漏掉</li>
+      </ul>
+      <div class="info-box">每下鼓起來後，先確定後面是放鬆的、有空間的，然後直接送上去。</div>
+
+    </div>
+  </div>
+
+  <!-- ====== 2. 微笑平壓 ====== -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>微笑平壓</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 步驟</div>
+      <ol class="steps">
+        <li>嘴巴含約 60% 空氣</li>
+        <li>嘴角跟舌頭一起抬升（不是純舌根）</li>
+        <li>臉用力推 → 舌頭同時往上抬抵抗</li>
+        <li>兩者互相抵抗，訓練到同步</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>臉推時空氣不能被擠下去</li>
+        <li>要感覺到臉與舌頭的「互相抵抗」</li>
+        <li>舌頭要有「想撐起來」的感覺</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>臉推時空氣被擠下去</td><td>舌頭要有抵抗感</td></tr>
+          <tr><td>只有舌根在動</td><td>嘴角與舌頭一起抬升</td></tr>
+          <tr><td>刻意做但不是本能</td><td>練到像含水時舌頭自動擋住一樣自然</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box"><strong>目標：</strong>練到身體本能 — 含一口水用力往後擠，舌頭自己會起來擋，沒人教你身體本能就會做。</div>
+
+    </div>
+  </div>
+
+  <!-- ====== 3. 開軟顎練習 ====== -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>開軟顎練習</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 步驟</div>
+      <ol class="steps">
+        <li>嘴巴輕輕鼓起來</li>
+        <li>捏住鼻子</li>
+        <li>想像要做一個法蘭茲（不用真的推）</li>
+        <li>感覺喉嚨上方有「輕輕掉下來」的感覺</li>
+        <li>重點是放鬆，不是用力</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>正確感覺：喉嚨上方「輕輕掉下來」的放鬆感</li>
+        <li>如果感覺是「推開」→ 方向錯了</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>舌頭後段上頂（鼓起來後還能用鼻子呼吸）</td><td>放鬆舌根，是舌頭後段封閉不是軟顎鎖住</td></tr>
+          <tr><td>用鼻球開關練習</td><td>用「想像法蘭茲」法（鼻球練習時聲門也在開開關關）</td></tr>
+          <tr><td>越用力越鎖</td><td>想「放鬆」不是想「打開」</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-title"><span class="icon">🔧</span> 感覺不到怎麼辦</div>
+      <ol class="steps">
+        <li>確認舌頭後段沒上頂</li>
+        <li>不要想「打開」，要想「放鬆」</li>
+        <li>急救法：先往鼻腔灌氣再一起鼓下來</li>
+        <li>多下水幾次</li>
+        <li>從漏氣練習入手</li>
+      </ol>
+
+    </div>
+  </div>
+
+  <!-- ====== 4. Mouthfill 鼓氣 ====== -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Mouthfill 鼓氣</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 步驟</div>
+      <ol class="steps">
+        <li>用嘴巴吹氣，同時讓臉鼓起來</li>
+        <li>用手指把嘴唇堵起來 → 臉自然膨脹</li>
+        <li>同時發出「嗯」或「嗚」的聲音</li>
+        <li>肚子要用力（往內縮的感覺）</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">🌊</span> 水中流程</div>
+      <ol class="steps">
+        <li>前段用法蘭茲/微笑平壓下潛</li>
+        <li>到鼓氣深度 → 鼓滿</li>
+        <li>露一點面鏡、平耳壓</li>
+        <li>再下幾米，補滿第二次</li>
+      </ol>
+      <div class="info-box">通常鼓 2 次就好。女生建議第一次 8 米、第二次 13 米。女生肺活量較小，肺部更早被壓縮到推不出氣的深度，所以需在更淺處鼓氣。</div>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>鼓氣時肚子往內縮 = 正確，往外凸 = 錯誤</li>
+        <li>水面鼓一口用到 10-15 米 = 正常（14-15 米及格）</li>
+        <li>鼓完後後側放鬆蓬蓬的 = 正確</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>偷 RP</td><td>用肚子推，聲門不開</td></tr>
+          <tr><td>鼓完喉嚨縮上去</td><td>後側要放鬆蓬蓬的</td></tr>
+          <tr><td>吞氣（15 米鼓完幾下就沒氣）</td><td>100% 是開了聲門</td></tr>
+          <tr><td>小量補氣</td><td>鼓兩次就好，用肚子推</td></tr>
+          <tr><td>肚子不用力</td><td>肚子往內縮，否則變成喉嚨緊</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 5. 調息與全呼吸 ====== -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>調息與全呼吸</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 調息原則</div>
+      <ul class="check-list">
+        <li>最好的調息就是正常呼吸</li>
+        <li>不用很久，確認不喘就好</li>
+        <li>下潛前心率完全不重要</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">🔬</span> 每個自潛者都該做的實驗</div>
+      <ol class="steps">
+        <li>第一潛：用你自認很好的調息</li>
+        <li>第二潛：只確認不喘，正常吸吐幾口就全呼吸下潛</li>
+        <li>你會發現兩趟感覺差不多</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">✅</span> 全呼吸自我檢查</div>
+      <ul class="check-list">
+        <li>吸飽後還能講話 → 沒吸飽</li>
+        <li>噴一口氣才能講話 → 才是真的吸飽</li>
+        <li>胸椎挺直，垂直+橫向都要擴張</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>用 4-7-8 拼命降心率</td><td>正常呼吸，做不好就是超呼吸</td></tr>
+          <tr><td>咬呼吸管出口無法控制</td><td>超大聲超快 = 超呼吸</td></tr>
+          <tr><td>調息調太久</td><td>確認不喘就好</td></tr>
+          <tr><td>全呼吸沒吸飽</td><td>噴一口氣才能講話 = 吸飽</td></tr>
+          <tr><td>全呼吸忽略垂直向擴張</td><td>胸椎挺直</td></tr>
+          <tr><td>全呼吸前深呼吸</td><td>不要，會壓抑呼吸欲望</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 6. 空氣轉換時機 ====== -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>空氣轉換時機</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">📋</span> 三個階段</div>
+      <ol class="steps">
+        <li>臉推</li>
+        <li>舌尖</li>
+        <li>舌根</li>
+      </ol>
+
+      <div class="info-box warn"><strong>關鍵原則：</strong>快推不到就換，不是等到真的沒東西可推才換。</div>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>等到完全推不到才換</td><td>快推不到就換，太晚會 lock 緊繃</td></tr>
+          <tr><td>全程只用一種推法</td><td>分階段利用不同肌群</td></tr>
+          <tr><td>不知道自己是舌尖還是舌根</td><td>先用張嘴測試判斷</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 7. 胸腔彈性拉伸 ====== -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>胸腔彈性拉伸</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">🅰️</span> 吊胃</div>
+      <ul class="check-list">
+        <li>判斷法 — 吊胃時沒辦法講話，縮小腹還可以</li>
+        <li>不用吐超乾</li>
+        <li>身體要挺起來</li>
+        <li>每天 5-10 次</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">🅱️</span> 按橫膈膜</div>
+      <ul class="check-list">
+        <li>肋骨下緣找軟的地方，方向「斜上」</li>
+        <li>懶人法：躺著用手機角斜上戳，吐氣時壓進去</li>
+        <li>一天按幾次都行</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">🅲</span> Packing 自由式</div>
+      <ul class="check-list">
+        <li>50 米一趟，休息一分鐘，10-20 趟</li>
+        <li>一週兩次</li>
+        <li>要有潛伴</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>Packing 量增加 = 彈性進步</li>
+        <li>胸腔緊繃感深度門檻往下 = 進步</li>
+        <li>胸口均勻的緊 = 正常；局部緊 = 有問題</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>吊胃吐太乾</td><td>循序漸進，避免橫膈膜抽筋</td></tr>
+          <tr><td>下潛時刻意吊胃</td><td>絕對不要！鎖骨凹陷處會被吸進去</td></tr>
+          <tr><td>縮身體/含胸</td><td>身體中立就好</td></tr>
+          <tr><td>Packing 自由式沒潛伴</td><td>一定要有潛伴</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 8. 身體中立位 ====== -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>身體中立位</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="info-box"><strong>定義：</strong>不縮不挺，讓身體回歸自然中立位置。</div>
+
+      <div class="sub-title"><span class="icon">📋</span> 如何找到中立位</div>
+      <ul class="check-list">
+        <li>用吊胃感受：身體縮起來橫膈膜就掉下去</li>
+        <li>下巴、頭、脖子放回來</li>
+        <li>不是挺胸，只是不鎖</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">✅</span> 自我檢查</div>
+      <ul class="check-list">
+        <li>吊胃測試：橫膈膜抬不起來 = 太縮</li>
+        <li>下潛時胸腔均勻緊 = 正常；局部異常緊 = 可能太縮</li>
+      </ul>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>過度縮（含胸）</td><td>不鎖胸腔，讓橫膈膜自然抬起</td></tr>
+          <tr><td>過度挺（刻意吊胃）</td><td>絕對不要，鎖骨凹陷被吸進去超危險</td></tr>
+          <tr><td>聽教練說「遇水壓要縮胸腔」</td><td>這是錯的，中立就好</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ====== 9. 舌位判斷 ====== -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>舌位判斷</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-title"><span class="icon">🔍</span> 張嘴測試</div>
+      <div class="info-box">嘴巴張很大時還能平壓 → 可能是舌根平壓或 H-Lock</div>
+
+      <div class="sub-title"><span class="icon">📊</span> 特徵比較</div>
+      <table class="compare-table">
+        <thead><tr><th>舌根平壓</th><th>舌尖平壓</th></tr></thead>
+        <tbody>
+          <tr><td>喉頭幅度大</td><td>動的位置前面、幅度小</td></tr>
+          <tr><td>容易海豚音</td><td>更多肌肉可分工</td></tr>
+          <tr><td>喉頭容易夾高位</td><td>嘴巴含氣時更輕鬆有力</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-title"><span class="icon">📋</span> 舌根 → 舌尖轉換方法</div>
+      <ol class="steps">
+        <li>先練舌尖平壓</li>
+        <li>再練嘴巴放一點空氣（約60%）的平壓</li>
+        <li>含水推擠練習</li>
+        <li>目標：連結到微笑平壓</li>
+      </ol>
+
+      <div class="sub-title"><span class="icon">⚠️</span> 常見錯誤</div>
+      <table class="mistake-table">
+        <thead><tr><th>錯誤</th><th>正確做法</th></tr></thead>
+        <tbody>
+          <tr><td>海豚音（只有舌根在動）</td><td>多利用前面舌頭</td></tr>
+          <tr><td>喉頭夾高位不動</td><td>應有明顯上下移動，做漏氣練習</td></tr>
+          <tr><td>平壓時脖子爆筋</td><td>脖子不用力，爆筋容易受傷</td></tr>
+          <tr><td>不知道自己是哪種就直接練</td><td>先張嘴測試判斷</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div><!-- .content -->
+
+<!-- Back to Top -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Show/hide back-to-top button
+const btn = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+  btn.classList.toggle('show', window.scrollY > 400);
+});
+
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('.section[id]');
+const navLinks = document.querySelectorAll('.nav-scroll a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const id = entry.target.id;
+      const link = document.querySelector(`.nav-scroll a[href="#${id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-60px 0px -70% 0px', threshold: 0 });
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
