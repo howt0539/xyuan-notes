@@ -12,21 +12,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F4F2EF;
-      --surface: #FAF9F7;
-      --surface-hover: #EFEDE9;
-      --card: #FAF9F7;
-      --border: #E5E5EA;
-      --text: #1D1D1F;
-      --text-secondary: #86868B;
-      --accent: #2A8B8B;
-      --accent-soft: rgba(42,139,139,0.08);
-      --accent-glow: rgba(42,139,139,0.15);
-      --star: #D4A017;
-      --tag-bg: rgba(42,139,139,0.08);
-      --tag-text: #2A8B8B;
-      --green: #34A853;
-      --green-bg: rgba(52,168,83,0.08);
+      --bg: #2C2825;
+      --surface: #363230;
+      --surface-hover: #3E3A37;
+      --card: #363230;
+      --border: rgba(255,255,255,0.08);
+      --text: #D5CEC6;
+      --text-secondary: #9B9490;
+      --accent: #B8A696;
+      --accent-soft: rgba(184,166,150,0.1);
+      --accent-glow: rgba(184,166,150,0.15);
+      --star: #C4A86A;
+      --tag-bg: rgba(184,166,150,0.1);
+      --tag-text: #B8A696;
+      --green: #8B9B87;
+      --green-bg: rgba(139,155,135,0.1);
       --radius: 16px;
       --radius-sm: 10px;
     }
@@ -46,7 +46,7 @@
       padding: 80px 24px 60px;
       text-align: center;
       overflow: hidden;
-      background: linear-gradient(160deg, #F4F2EF 0%, #EFEDE9 50%, #F2F0EC 100%);
+      background: linear-gradient(160deg, #2C2825 0%, #332F2C 50%, #2E2A27 100%);
     }
     .hero::before {
       content: '';
@@ -54,7 +54,7 @@
       top: -120px; left: 50%; transform: translateX(-50%);
       width: 600px; height: 600px;
       background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      opacity: 0.25;
+      opacity: 0.2;
       pointer-events: none;
     }
     .hero h1 {
@@ -169,7 +169,7 @@
     .view-toggle-btn.active {
       color: var(--accent);
       background: var(--accent-soft);
-      border-color: rgba(42,139,139,0.3);
+      border-color: rgba(184,166,150,0.3);
     }
 
     /* Nav */
@@ -177,7 +177,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(244,242,239,0.9);
+      background: rgba(44,40,37,0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
@@ -327,13 +327,13 @@
       transition: border-color 0.2s;
     }
     .topic-card:hover {
-      border-color: rgba(42,139,139,0.25);
+      border-color: rgba(184,166,150,0.2);
     }
     .topic-card.starred {
-      border-color: rgba(212,160,23,0.25);
+      border-color: rgba(196,168,106,0.25);
     }
     .topic-card.starred .topic-header {
-      background: rgba(212,160,23,0.06);
+      background: rgba(196,168,106,0.15);
     }
     .topic-card.search-hidden {
       display: none;
@@ -364,7 +364,7 @@
       font-weight: 700;
     }
     .topic-card.starred .topic-number {
-      background: rgba(212,160,23,0.12);
+      background: rgba(196,168,106,0.15);
       color: var(--star);
     }
     .topic-title {
@@ -375,7 +375,7 @@
     .star-badge {
       font-size: 0.7rem;
       color: var(--star);
-      background: rgba(212,160,23,0.1);
+      background: rgba(196,168,106,0.15);
       padding: 2px 8px;
       border-radius: 999px;
       font-weight: 600;
@@ -429,7 +429,7 @@
       opacity: 0.3;
     }
     .topic-body strong {
-      color: #1D1D1F;
+      color: #D5CEC6;
       font-weight: 600;
     }
     .topic-body h4 {
@@ -467,7 +467,7 @@
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
     .topic-card { animation: fadeUp 0.4s ease both; }
     .topic-card:nth-child(2) { animation-delay: 0.05s; }
@@ -481,7 +481,7 @@
     }
 
     mark {
-      background: rgba(42,139,139,0.15);
+      background: rgba(184,166,150,0.2);
       color: inherit;
       padding: 1px 2px;
       border-radius: 3px;
@@ -493,13 +493,13 @@
 </head>
 <body>
 
-  <a href="index.html" style="position:fixed;top:16px;left:16px;z-index:1000;color:#86868B;text-decoration:none;font-size:0.85rem;background:rgba(244,242,239,0.85);padding:6px 14px;border-radius:20px;backdrop-filter:blur(8px);border:1px solid #E5E5EA;">← 首頁</a>
+  <a href="index.html" style="position:fixed;top:16px;left:16px;z-index:1000;color:#9B9490;text-decoration:none;font-size:0.85rem;background:rgba(44,40,37,0.85);padding:6px 14px;border-radius:20px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.08);">← 首頁</a>
   <header class="hero">
-    <h1>🤿 直播學習筆記</h1>
+    <h1><img src="favicon.svg" alt="" style="width:36px;height:36px;vertical-align:middle;margin-right:8px;">直播學習筆記</h1>
     <p class="subtitle">自由潛水直播 QA 精華整理</p>
     <div class="meta-badges">
       <span class="badge">🎙️ 9 場直播</span>
-      <span class="badge">✏️ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></span>
+      <span class="badge">✏️ 製作：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></span>
     </div>
   </header>
 
@@ -5603,7 +5603,7 @@
   </main>
 
   <footer>
-    <p>整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
+    <p>製作：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
   </footer>
 
   <script>

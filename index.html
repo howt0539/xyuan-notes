@@ -18,18 +18,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #E8D5CC;
-      --surface: #E0CCC2;
-      --card: #F5ECE6;
-      --card-hover: #F0E5DD;
-      --border: #D4B5A5;
-      --text: #3A2520;
-      --text-secondary: #8A6E60;
-      --accent: #B05A3A;
-      --accent-soft: rgba(176,90,58,0.1);
-      --accent-glow: rgba(176,90,58,0.25);
-      --warm: #B05A3A;
-      --warm-soft: rgba(176,90,58,0.1);
+      --bg: #D5CEC6;
+      --surface: #C8C0B7;
+      --card: #E2DBD3;
+      --card-hover: #DDD5CC;
+      --border: #BFB7AD;
+      --text: #3E3835;
+      --text-secondary: #7A7370;
+      --accent: #A6796A;
+      --accent-soft: rgba(166,121,106,0.12);
+      --accent-glow: rgba(166,121,106,0.2);
+      --warm: #A6796A;
+      --warm-soft: rgba(166,121,106,0.12);
       --radius: 20px;
     }
 
@@ -114,14 +114,14 @@
     }
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(58,37,32,0.08);
+      box-shadow: 0 8px 24px rgba(62,56,53,0.08);
     }
     .card-notes:hover {
-      border-color: rgba(176,90,58,0.4);
+      border-color: rgba(166,121,106,0.4);
       background: var(--card-hover);
     }
     .card-slides:hover {
-      border-color: rgba(176,90,58,0.4);
+      border-color: rgba(166,121,106,0.4);
       background: var(--card-hover);
     }
 
@@ -137,7 +137,7 @@
       margin-bottom: 6px;
     }
     .card-notes .card-info h2 { color: var(--accent); }
-    .card-slides .card-info h2 { color: #B05A3A; }
+    .card-slides .card-info h2 { color: #A6796A; }
     .card-info p {
       font-size: 0.88rem;
       color: var(--text-secondary);
@@ -154,7 +154,7 @@
       transform: translateX(4px);
     }
     .card-notes:hover .card-arrow { color: var(--accent); }
-    .card-slides:hover .card-arrow { color: #B05A3A; }
+    .card-slides:hover .card-arrow { color: #A6796A; }
 
     .card-tag {
       display: inline-block;
@@ -169,8 +169,8 @@
       color: var(--accent);
     }
     .card-slides .card-tag {
-      background: rgba(176,90,58,0.1);
-      color: #B05A3A;
+      background: rgba(166,121,106,0.12);
+      color: #A6796A;
     }
 
     footer {
