@@ -4,22 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>自由潛水學習筆記</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <meta name="description" content="自由潛水學習筆記與教材｜整理：@howt0539">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --card: #1e2230;
-      --card-hover: #252a3a;
-      --border: rgba(255,255,255,0.06);
-      --text: #e8e8ed;
-      --text-secondary: #9ca3b0;
-      --accent: #6c8cff;
-      --accent-soft: rgba(108,140,255,0.12);
-      --accent-glow: rgba(108,140,255,0.25);
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-hover: #f5f0e8;
+      --border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent-glow: rgba(196,113,59,0.25);
       --warm: #c4713b;
-      --warm-soft: rgba(196,113,59,0.12);
+      --warm-soft: rgba(196,113,59,0.1);
       --radius: 20px;
     }
 
@@ -104,14 +105,14 @@
     }
     .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 24px rgba(58,51,48,0.08);
     }
     .card-notes:hover {
-      border-color: rgba(108,140,255,0.3);
+      border-color: rgba(196,113,59,0.4);
       background: var(--card-hover);
     }
     .card-slides:hover {
-      border-color: rgba(196,113,59,0.3);
+      border-color: rgba(196,113,59,0.4);
       background: var(--card-hover);
     }
 
@@ -127,7 +128,7 @@
       margin-bottom: 6px;
     }
     .card-notes .card-info h2 { color: var(--accent); }
-    .card-slides .card-info h2 { color: var(--warm); }
+    .card-slides .card-info h2 { color: #a0612f; }
     .card-info p {
       font-size: 0.88rem;
       color: var(--text-secondary);
@@ -144,7 +145,7 @@
       transform: translateX(4px);
     }
     .card-notes:hover .card-arrow { color: var(--accent); }
-    .card-slides:hover .card-arrow { color: var(--warm); }
+    .card-slides:hover .card-arrow { color: #a0612f; }
 
     .card-tag {
       display: inline-block;
@@ -159,8 +160,8 @@
       color: var(--accent);
     }
     .card-slides .card-tag {
-      background: var(--warm-soft);
-      color: var(--warm);
+      background: rgba(160,97,47,0.1);
+      color: #a0612f;
     }
 
     footer {
