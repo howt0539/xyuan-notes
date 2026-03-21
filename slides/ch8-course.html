@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch.8 課程與教練選擇｜自由潛水 Mouthfill 教材</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent2: #5a7a5c;
+      --accent2-soft: rgba(90,122,92,0.1);
+      --brown: #8b6f47;
+      --brown-soft: rgba(139,111,71,0.08);
+      --highlight: #e8a854;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cover */
+    .slide-cover {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    .slide-cover .cover-icon { font-size: 5rem; }
+    .slide-cover h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .slide-cover .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+    .slide-cover .series {
+      margin-top: 20px;
+      padding: 8px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Content slides */
+    .slide-content { gap: 32px; }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slide-num {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .card.accent {
+      background: var(--accent-soft);
+      border-color: rgba(196,113,59,0.2);
+    }
+    .card.green {
+      background: var(--accent2-soft);
+      border-color: rgba(90,122,92,0.2);
+    }
+    .card.brown {
+      background: var(--brown-soft);
+      border-color: rgba(139,111,71,0.15);
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+    }
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .callout p { font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+    .callout strong { color: var(--accent); }
+
+    .steps {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1;
+      min-width: 150px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .step::after {
+      content: '→';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+    .step:last-child::after { display: none; }
+
+    /* Summary slide */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .summary-card:hover { transform: translateY(-4px); }
+    .summary-card .num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .summary-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .summary-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: rgba(250,247,242,0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--card-border);
+      z-index: 100;
+    }
+    .nav-btn {
+      padding: 10px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .nav-btn:disabled:hover {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--card-border);
+    }
+    .nav-progress {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--surface);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .slide-cover h1 { font-size: 2rem; }
+      .slide-title { font-size: 1.4rem; }
+      .cards.cols-3 { grid-template-columns: 1fr; }
+      .cards.cols-2 { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; }
+      .step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active" data-slide="1">
+    <div class="cover-icon">🎓</div>
+    <h1>課程與教練選擇</h1>
+    <p class="subtitle">自由潛水課程規劃與選擇教學</p>
+    <span class="series">自由潛水 Mouthfill 教材系列 — Ch.8</span>
+  </div>
+
+  <!-- Slide 2: 學習階段判斷 -->
+  <div class="slide slide-content" data-slide="2">
+    <div class="slide-header">
+      <span class="slide-num">01</span>
+      <h2 class="slide-title">學習階段判斷：不要急著上下一階</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">常見錯誤</div>
+        <h3>A2 → A3 → A4 連續上</h3>
+        <p>很多 A3 學生想馬上上 A4，但建議先好好玩一陣子水，建立良好的習慣和心態再進階。有學生 A2 三天加 A3 四天就去上 A4，結果直接炸掉。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">建議做法</div>
+        <h3>先玩水、再訓練</h3>
+        <p>先享受海洋、建立開心的回憶，遇到挫折時才能快速轉換心態。如果自由潛水全部都在訓練，遇到瓶頸會轉不過來，甚至開始不喜歡自由潛水。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>訓練的目的是<strong>去更深的地方玩</strong>，不是為了數字。先享受過程，成績自然會跟上。</p>
+    </div>
+  </div>
+
+  <!-- Slide 3: MF 最佳學習時機 -->
+  <div class="slide slide-content" data-slide="3">
+    <div class="slide-header">
+      <span class="slide-num">02</span>
+      <h2 class="slide-title">Mouthfill 最佳學習時機</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <div class="card-label">最佳時機</div>
+        <h3>PB 25-30 米</h3>
+        <p>PB 25-28 的人最好教，沒有太多壞習慣需要先改掉。不要超過 30 米再來學。</p>
+      </div>
+      <div class="card">
+        <div class="card-label">太晚的風險</div>
+        <h3>PB 超過 30 米</h3>
+        <p>可能用了很多硬下的方式，累積太多壞習慣（尤其是 RP），超難修正。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">前置準備</div>
+        <h3>A3 先學微笑平壓</h3>
+        <p>微笑平壓就是在練 Mouthfill 相關的口腔控制，A3 階段就可以開始接觸。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>簡單來說，<strong>Mouthfill 越早練越好</strong>。穩定 25-30 米的人最適合報深度班學 Mouthfill。</p>
+    </div>
+  </div>
+
+  <!-- Slide 4: 為什麼不該太晚練 MF -->
+  <div class="slide slide-content" data-slide="4">
+    <div class="slide-header">
+      <span class="slide-num">03</span>
+      <h2 class="slide-title">為什麼不該太晚練 Mouthfill</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心矛盾</div>
+        <h3>RP 跟 Mouthfill 互相衝突</h3>
+        <p>學 Mouthfill 之前，所有人都在 RP（開聲門拉空氣出來）。Mouthfill 要求聲門不動，但累積好幾個月甚至好幾年的 RP 習慣超難改。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">安全考量</div>
+        <h3>受傷不是因為學了 MF</h3>
+        <p>會受傷是因為過 30 米還在用不對的方法（RP）平壓。大概八成以上的擠壓傷，都來自過 30 米後還在偷拉空氣。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>A3 就開始教微笑平壓，在 <strong>10 米以內</strong>玩水時順便做。熟悉口腔控制後再往深處邁進，不會受傷。實際案例：有人練了微笑平壓一兩個月後，下四五十潛都不會卡平壓。</p>
+    </div>
+  </div>
+
+  <!-- Slide 5: MF 越早練越好的理由 -->
+  <div class="slide slide-content" data-slide="5">
+    <div class="slide-header">
+      <span class="slide-num">04</span>
+      <h2 class="slide-title">Mouthfill 課程在學什麼</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card">
+        <div class="card-label">課程重點</div>
+        <h3>大部分時間在優化平壓</h3>
+        <p>Mouthfill 課不是叫你鼓起來就去下。大多數時間在優化平壓，第一堂課一定是一對一，因為每個人的平壓狀況都不一樣。</p>
+      </div>
+      <div class="card accent">
+        <div class="card-label">耳膜敏感者</div>
+        <h3>MF 讓平壓更舒服</h3>
+        <p>耳膜敏感的人（例如 0.5 米就要一個平壓），學 Mouthfill 可以用更舒服的方式下潛，更不容易受傷或產生彈性疲乏，無關深度。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>有些人說「Mouthfill 不要太早練，學生會下太深很危險」。但事實是：<strong>熟悉口腔控制後再進深度，反而更安全</strong>。</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: 深度班 vs A3 -->
+  <div class="slide slide-content" data-slide="6">
+    <div class="slide-header">
+      <span class="slide-num">05</span>
+      <h2 class="slide-title">深度班 vs A3 課程比較</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">深度班（3天）</div>
+        <h3>專攻平壓技術</h3>
+        <p>最適合 PB 25-28 的人，甚至 20 米來最好。全程練平壓（陸地加水下），下的比 A3 還淺（15 米以內練好再說）。課前一個月會視訊溝通。不用擔心能力不足。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">A3 課程</div>
+        <h3>全方位學習</h3>
+        <p>學科講十幾個小時，涵蓋很多重要內容。重點在於：放鬆的下潛、找到自由潛水的快樂、認識自己。會帶學生下到 25-30 米。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>為什麼 PB 25-28 最適合深度班：還沒用 RP 下超過 30 米，不會有奇怪的壞習慣。<strong>RP 跟 Mouthfill 根本上互相衝突</strong>。</p>
+    </div>
+  </div>
+
+  <!-- Slide 7: 推薦的初階法蘭茲學習資源 -->
+  <div class="slide slide-content" data-slide="7">
+    <div class="slide-header">
+      <span class="slide-num">06</span>
+      <h2 class="slide-title">推薦的初階法蘭茲學習資源</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent" style="display:flex;flex-direction:column;justify-content:center;padding:32px;">
+        <div class="card-label">適合對象</div>
+        <h3>法蘭茲卡兩三年以上的人</h3>
+        <p>如果你的法蘭茲一直練不好、卡了很久，初階法蘭茲有專門的學習管道可以突破。</p>
+      </div>
+      <div class="card green" style="display:flex;flex-direction:column;justify-content:center;padding:32px;">
+        <div class="card-label">推薦資源</div>
+        <h3>彥成（Lion Yen 0001）</h3>
+        <p>被認為是最會教初階法蘭茲的人。初階法蘭茲有問題，極度推薦去找彥成學習。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🎯</span>
+      <p>法蘭茲做得好，Mouthfill 效率才會好。<strong>兩者都取決於你對口腔的熟悉程度</strong>。</p>
+    </div>
+  </div>
+
+  <!-- Slide 8: 2018年A2案例分析 -->
+  <div class="slide slide-content" data-slide="8">
+    <div class="slide-header">
+      <span class="slide-num">07</span>
+      <h2 class="slide-title">案例分析：A2 時期常見錯誤</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <h3>超呼吸</h3>
+        <p>全呼吸前深呼吸，導致氧分壓高、沒有呼吸反應，以為自己還行。</p>
+      </div>
+      <div class="card">
+        <h3>全呼吸沒吸飽</h3>
+        <p>很沉、沒踢幾下就 free fall。胸腔在 16-17 米就緊到不行。出現隧道視覺卻不自知。</p>
+      </div>
+      <div class="card brown">
+        <h3>安全意識不足</h3>
+        <p>穿水母衣不是防寒衣、沒有潛伴、用保麗龍當浮球。上升時暴衝、很慌。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p>無知很可怕。這個 2018 年 A2 時期的案例說明了<strong>為什麼基礎課程很重要</strong>，不能跳過 A3 的重要學科內容。</p>
+    </div>
+  </div>
+
+  <!-- Slide 9: 以潛水為職業 -->
+  <div class="slide slide-content" data-slide="9">
+    <div class="slide-header">
+      <span class="slide-num">08</span>
+      <h2 class="slide-title">職業考量：斜槓自潛教學</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card">
+        <div class="card-label">現實挑戰</div>
+        <h3>全職教學很難養活自己</h3>
+        <p>學生來源有限，剛開始只能教身邊的人。能僱用人的店非常少。裝備和交通成本高昂（東北角或小琉球來回）。</p>
+      </div>
+      <div class="card accent">
+        <div class="card-label">身心壓力</div>
+        <h3>平日上班、假日教課</h3>
+        <p>等於完全沒有休假，長期下來會發瘋。很多潛水教學者都對潛水逐漸失去熱情。如果可以的話，潛水還是當興趣就好。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>最重要的問題：<strong>學生沒有保障</strong>。斜槓教學者隨時可能不教、消失。自潛課程一分錢一分貨，便宜的課一對六，品質差很多。教學中的成就感是支撐走下去的動力。</p>
+    </div>
+  </div>
+
+  <!-- Slide 10: Summary -->
+  <div class="slide slide-content" data-slide="10">
+    <div class="slide-header">
+      <span class="slide-num" style="background:var(--accent2)">✓</span>
+      <h2 class="slide-title">本章重點回顧</h2>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="num">01</div>
+        <h3>先玩再練</h3>
+        <p>不要急著上下一階<br>建立好心態再進階</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">02</div>
+        <h3>MF 早練</h3>
+        <p>PB 25-30 最適合<br>越早練越好</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">03</div>
+        <h3>RP 衝突</h3>
+        <p>RP 習慣越深越難改<br>八成擠壓傷來自 RP</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">04</div>
+        <h3>課程選擇</h3>
+        <p>深度班專攻平壓<br>A3 全方位學習</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">05</div>
+        <h3>一分錢一分貨</h3>
+        <p>好課程有其價值<br>別省在教學上</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:0.85rem;color:var(--text-secondary)">
+      自由潛水 Mouthfill 教材系列 ｜ 整理：@howt0539
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← 上一頁</button>
+  <div style="text-align:center">
+    <span class="nav-progress" id="pageNum">1 / 10</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="next()">下一頁 →</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 10;
+  const slides = document.querySelectorAll('.slide');
+
+  function show(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    document.getElementById('pageNum').textContent = `${n} / ${total}`;
+    document.getElementById('progressFill').style.width = `${(n/total)*100}%`;
+    document.getElementById('prevBtn').disabled = n === 1;
+    document.getElementById('nextBtn').disabled = n === total;
+  }
+
+  function next() { if (current < total) show(++current); }
+  function prev() { if (current > 1) show(--current); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch.7 心態與成長｜自由潛水 Mouthfill 教材</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent2: #5a7a5c;
+      --accent2-soft: rgba(90,122,92,0.1);
+      --brown: #8b6f47;
+      --brown-soft: rgba(139,111,71,0.08);
+      --highlight: #e8a854;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cover */
+    .slide-cover {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    .slide-cover .cover-icon { font-size: 5rem; }
+    .slide-cover h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .slide-cover .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+    .slide-cover .series {
+      margin-top: 20px;
+      padding: 8px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Content slides */
+    .slide-content { gap: 32px; }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slide-num {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .card.accent {
+      background: var(--accent-soft);
+      border-color: rgba(196,113,59,0.2);
+    }
+    .card.green {
+      background: var(--accent2-soft);
+      border-color: rgba(90,122,92,0.2);
+    }
+    .card.brown {
+      background: var(--brown-soft);
+      border-color: rgba(139,111,71,0.15);
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+    }
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .callout p { font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+    .callout strong { color: var(--accent); }
+
+    .steps {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1;
+      min-width: 150px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .step::after {
+      content: '\2192';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+    .step:last-child::after { display: none; }
+
+    /* Summary slide */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .summary-card:hover { transform: translateY(-4px); }
+    .summary-card .num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .summary-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .summary-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: rgba(250,247,242,0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--card-border);
+      z-index: 100;
+    }
+    .nav-btn {
+      padding: 10px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .nav-btn:disabled:hover {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--card-border);
+    }
+    .nav-progress {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--surface);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .slide-cover h1 { font-size: 2rem; }
+      .slide-title { font-size: 1.4rem; }
+      .cards.cols-3 { grid-template-columns: 1fr; }
+      .cards.cols-2 { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; }
+      .step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active" data-slide="1">
+    <div class="cover-icon">🧠</div>
+    <h1>心態與成長</h1>
+    <p class="subtitle">自由潛水心態與成長教學</p>
+    <span class="series">自由潛水 Mouthfill 教材系列 — Ch.7</span>
+  </div>
+
+  <!-- Slide 2: 下深度不緊張 + 下深度時在想什麼 -->
+  <div class="slide slide-content" data-slide="2">
+    <div class="slide-header">
+      <span class="slide-num">01</span>
+      <h2 class="slide-title">下深度不緊張：建立信任感</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心觀念</div>
+        <h3>緊張的根源是平壓</h3>
+        <p>靜態閉氣有 4 分鐘，下 50 甚至 60 絕對綽綽有餘，上來喘都不用喘。大部分人緊張的原因其實是平壓：就算心裡放鬆，平壓不夠舒服就會一直被影響。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">解決方法</div>
+        <h3>陸地練到變本能</h3>
+        <p>在陸地上把平壓練到滾瓜爛熟、變成本能。相信自己的閉氣能力、體能、平壓。多跟海建立開心的回憶，海對你來說就是放鬆舒服的地方。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p><strong>千萬不要緊張</strong>：緊張會讓身體做出太多錯誤的事，嚴重可造成擠壓傷。下面沒有想像的那麼恐怖，繩子會超亮超明顯，盯著繩子專注做事就好。</p>
+    </div>
+  </div>
+
+  <!-- Slide 3: 下深度時在想什麼 -->
+  <div class="slide slide-content" data-slide="3">
+    <div class="slide-header">
+      <span class="slide-num">02</span>
+      <h2 class="slide-title">下深度時在想什麼</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🌊</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">PB 七八成</h3>
+        <p>完全不帶腦<br>很放鬆很享受<br>純粹感受水的美好</p>
+      </div>
+      <div class="card accent" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🎯</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">推 PB 時</h3>
+        <p>超級專注<br>抓住意識、調整 freefall 流線<br>注意空氣使用</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>看似矛盾但其實不是：<strong>「專注的讓腦袋放空」</strong>。專注的同時還要讓身體放鬆、讓腦袋放空，這是深度下潛的核心狀態。</p>
+    </div>
+  </div>
+
+  <!-- Slide 4: 極度放鬆下 PB 七成 -->
+  <div class="slide slide-content" data-slide="4">
+    <div class="slide-header">
+      <span class="slide-num">03</span>
+      <h2 class="slide-title">極度放鬆下 PB 七成</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card green">
+        <div class="card-label">具體練習</div>
+        <h3>完全不管姿勢地享受</h3>
+        <p>如果你已經能下 50 米，非常推薦極度放鬆地下 PB 的七成。完全不管姿勢、平壓輕鬆做、閉眼感受水流和下墜感。</p>
+      </div>
+      <div class="card accent">
+        <div class="card-label">核心理念</div>
+        <h3>玩水才能好好下深度</h3>
+        <p>這是一直推崇的理念：先學會享受水下的感覺，深度自然會來。把訓練和享受結合在一起。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>注意：躺下來 Freefall 時上半身容易微縮，會感覺胸腔緊。<strong>記得保持身體直</strong>，但心態上完全放鬆享受。</p>
+    </div>
+  </div>
+
+  <!-- Slide 5: 遇到瓶頸的解決方法 -->
+  <div class="slide slide-content" data-slide="5">
+    <div class="slide-header">
+      <span class="slide-num">04</span>
+      <h2 class="slide-title">遇到瓶頸的解決方法</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <div class="card-label">平壓卡關</div>
+        <h3>去淺的地方練</h3>
+        <p>平壓有問題就去 15 米以內練。一直下深度練不了平壓，太多事情要注意、太緊張，腦袋沒餘裕思考平壓。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">陸地練習</div>
+        <h3>大量的陸地功課</h3>
+        <p>陸地上有很多平壓練習可以做。把平壓練到本能反應，下水只是驗證。</p>
+      </div>
+      <div class="card brown">
+        <div class="card-label">心態調整</div>
+        <h3>接受漫長的過程</h3>
+        <p>從卡平壓到突破，可能需要花上一兩年甚至更久。擠壓傷的原因超多：聲門鎖太緊、身體姿勢不對、平壓用力方式不對。需要一個一個排除。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>瓶頸不可怕，可怕的是<strong>用錯誤的方式硬突破</strong>。退一步去淺水區練好基礎，反而是最快的進步方式。</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: 賽前訓練心態 -->
+  <div class="slide slide-content" data-slide="6">
+    <div class="slide-header">
+      <span class="slide-num">05</span>
+      <h2 class="slide-title">賽前訓練心態：先玩水，再訓練</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心理念</div>
+        <h3>訓練的目的是去更深的地方玩</h3>
+        <p>建議先玩水玩上一兩年再開始深度訓練。遇到挫折時能快速轉換心態，因為海裡不是只有訓練。訓練不是為了數字，是為了能力。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">心態陷阱</div>
+        <h3>別讓訓練變成全部</h3>
+        <p>如果自由潛水全部都在訓練，遇到挫折會轉換不過來，可能開始不喜歡自由潛水。保持對海洋的熱愛比任何數字都重要。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>想像一下：整團每個人都可以在美麗的海底下面晃來晃去。<strong>原來訓練就是為了可以這麼做</strong> — 這才是自由潛水的意義。</p>
+    </div>
+  </div>
+
+  <!-- Slide 7: Summary -->
+  <div class="slide slide-content" data-slide="7">
+    <div class="slide-header">
+      <span class="slide-num" style="background:var(--accent2)">✓</span>
+      <h2 class="slide-title">本章重點回顧</h2>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="num">01</div>
+        <h3>不緊張</h3>
+        <p>緊張源自平壓<br>練到本能就不怕</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">02</div>
+        <h3>專注放空</h3>
+        <p>專注的讓腦袋放空<br>身心分離的藝術</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">03</div>
+        <h3>放鬆七成</h3>
+        <p>極度放鬆下 PB 七成<br>享受水下感覺</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">04</div>
+        <h3>退步突破</h3>
+        <p>卡關就去淺水練<br>基礎是最快的路</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">05</div>
+        <h3>先玩再練</h3>
+        <p>訓練為了玩水<br>保持對海的熱愛</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:0.85rem;color:var(--text-secondary)">
+      自由潛水 Mouthfill 教材系列 ｜ 整理：@howt0539
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← 上一頁</button>
+  <div style="text-align:center">
+    <span class="nav-progress" id="pageNum">1 / 7</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:14.3%"></div></div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="next()">下一頁 →</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 7;
+  const slides = document.querySelectorAll('.slide');
+
+  function show(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    document.getElementById('pageNum').textContent = `${n} / ${total}`;
+    document.getElementById('progressFill').style.width = `${(n/total)*100}%`;
+    document.getElementById('prevBtn').disabled = n === 1;
+    document.getElementById('nextBtn').disabled = n === total;
+  }
+
+  function next() { if (current < total) show(++current); }
+  function prev() { if (current > 1) show(--current); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+
+</body>
+</html>

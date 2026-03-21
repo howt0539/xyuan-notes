@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自由潛水 Mouthfill 教材系列</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent2: #5a7a5c;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      padding: 80px 24px 60px;
+    }
+    .hero-icon { font-size: 4rem; margin-bottom: 16px; }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .chapters {
+      display: grid;
+      gap: 16px;
+    }
+
+    .chapter-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .chapter-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border-color: var(--accent);
+    }
+
+    .ch-num {
+      width: 52px; height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .ch-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .ch-info { flex: 1; }
+    .ch-info h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .ch-info p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .ch-arrow {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .chapter-card:hover .ch-arrow {
+      transform: translateX(4px);
+      color: var(--accent);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .back-link:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 60px 20px 40px; }
+      .chapter-card { padding: 18px 20px; gap: 14px; }
+      .ch-num { width: 42px; height: 42px; font-size: 0.75rem; }
+      .ch-icon { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-icon">🤿</div>
+    <h1>自由潛水 Mouthfill 教材</h1>
+    <p>9 堂課，從呼吸基礎到深度進階</p>
+  </header>
+
+  <main class="container">
+    <div class="section-label">全部章節</div>
+    <div class="chapters">
+      <a class="chapter-card" href="ch1-breathing.html">
+        <span class="ch-num">Ch.1</span>
+        <span class="ch-icon">🫁</span>
+        <div class="ch-info">
+          <h3>呼吸與下潛準備</h3>
+          <p>調息、全呼吸、心率迷思、Packing 策略</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch2-equalization.html">
+        <span class="ch-num">Ch.2</span>
+        <span class="ch-icon">👅</span>
+        <div class="ch-info">
+          <h3>口腔認識與基礎平壓</h3>
+          <p>聲門、軟顎、舌頭角色、漏氣練習、微笑平壓</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch3-mouthfill.html">
+        <span class="ch-num">Ch.3</span>
+        <span class="ch-icon">💨</span>
+        <div class="ch-info">
+          <h3>Mouthfill 技術</h3>
+          <p>鼓氣邏輯、聲門原則、恆壓vs點放、效率與深度進階</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch4-body-squeeze.html">
+        <span class="ch-num">Ch.4</span>
+        <span class="ch-icon">🦴</span>
+        <div class="ch-info">
+          <h3>身體結構與擠壓傷</h3>
+          <p>胸腔彈性、身體中立位、擠壓傷分類與預防</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch5-safety.html">
+        <span class="ch-num">Ch.5</span>
+        <span class="ch-icon">🛡️</span>
+        <div class="ch-info">
+          <h3>生理反應與安全</h3>
+          <p>抽動判斷、呼吸渴望、BO/LMC、減壓病、獨潛警示</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch6-training.html">
+        <span class="ch-num">Ch.6</span>
+        <span class="ch-icon">📋</span>
+        <div class="ch-info">
+          <h3>訓練規劃與方法</h3>
+          <p>泳池vs深度、訓練週期、FRC/RV、Dive Log、比賽策略</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch7-mindset.html">
+        <span class="ch-num">Ch.7</span>
+        <span class="ch-icon">🧠</span>
+        <div class="ch-info">
+          <h3>心態與成長</h3>
+          <p>下深度不緊張、極度放鬆、突破瓶頸、賽前心態</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch8-course.html">
+        <span class="ch-num">Ch.8</span>
+        <span class="ch-icon">🎓</span>
+        <div class="ch-info">
+          <h3>課程與教練選擇</h3>
+          <p>學習階段、Mouthfill 時機、課程比較、職業考量</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+      <a class="chapter-card" href="ch9-gear.html">
+        <span class="ch-num">Ch.9</span>
+        <span class="ch-icon">🔧</span>
+        <div class="ch-info">
+          <h3>裝備與其他</h3>
+          <p>防寒衣、蛙鞋選擇、碳纖軟硬度、安全裝備</p>
+        </div>
+        <span class="ch-arrow">→</span>
+      </a>
+    </div>
+
+    <a class="back-link" href="../">← 回到直播筆記</a>
+  </main>
+
+  <footer>
+    <p>自由潛水 Mouthfill 教材系列 ｜ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
+  </footer>
+
+</body>
+</html>

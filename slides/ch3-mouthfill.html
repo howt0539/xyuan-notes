@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch.3 Mouthfill 技術｜自由潛水 Mouthfill 教材</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent2: #5a7a5c;
+      --accent2-soft: rgba(90,122,92,0.1);
+      --brown: #8b6f47;
+      --brown-soft: rgba(139,111,71,0.08);
+      --highlight: #e8a854;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cover */
+    .slide-cover {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    .slide-cover .cover-icon { font-size: 5rem; }
+    .slide-cover h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .slide-cover .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+    .slide-cover .series {
+      margin-top: 20px;
+      padding: 8px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Content slides */
+    .slide-content { gap: 32px; }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slide-num {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .card.accent {
+      background: var(--accent-soft);
+      border-color: rgba(196,113,59,0.2);
+    }
+    .card.green {
+      background: var(--accent2-soft);
+      border-color: rgba(90,122,92,0.2);
+    }
+    .card.brown {
+      background: var(--brown-soft);
+      border-color: rgba(139,111,71,0.15);
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+    }
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .callout p { font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+    .callout strong { color: var(--accent); }
+
+    .steps {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1;
+      min-width: 150px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .step::after {
+      content: '\2192';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+    .step:last-child::after { display: none; }
+
+    /* Summary slide */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .summary-card:hover { transform: translateY(-4px); }
+    .summary-card .num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .summary-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .summary-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: rgba(250,247,242,0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--card-border);
+      z-index: 100;
+    }
+    .nav-btn {
+      padding: 10px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .nav-btn:disabled:hover {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--card-border);
+    }
+    .nav-progress {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--surface);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .slide-cover h1 { font-size: 2rem; }
+      .slide-title { font-size: 1.4rem; }
+      .cards.cols-3 { grid-template-columns: 1fr; }
+      .cards.cols-2 { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; }
+      .step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active" data-slide="1">
+    <div class="cover-icon">🫧</div>
+    <h1>Mouthfill<br>技術</h1>
+    <p class="subtitle">自由潛水 Mouthfill 平壓技術教學</p>
+    <span class="series">自由潛水 Mouthfill 教材系列 — Ch.3</span>
+  </div>
+
+  <!-- Slide 2: MF vs RP -->
+  <div class="slide slide-content" data-slide="2">
+    <div class="slide-header">
+      <span class="slide-num">01</span>
+      <h2 class="slide-title">Mouthfill vs RP（Reverse Packing）</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">Mouthfill = 鼓</div>
+        <h3>用肚子推一個氣壓出來</h3>
+        <p>Mouthfill 不是一種平壓方式，而是「拿空氣的方法」。用肚子推一個氣壓出來，鼓一口空氣在嘴巴，聲門不要開。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">RP = 拉</div>
+        <h3>喉頭往下拉產生負壓</h3>
+        <p>喉頭往下拉 → 產生負壓 → 聲門打開 → 空氣被抽上來。像針筒：堵住上面、拉開、放手 → 空氣砰地被吸進去。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p>學 Mouthfill 之前，所有人都在 RP。MF 和 RP 互相衝突：MF 要聲門不動，RP 要開聲門。<strong>大概八成以上的擠壓傷，都來自過 30 米後還在偷拉空氣。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 3: 鼓氣的底層邏輯 -->
+  <div class="slide slide-content" data-slide="3">
+    <div class="slide-header">
+      <span class="slide-num">02</span>
+      <h2 class="slide-title">鼓氣的底層邏輯：肚子要用力</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">正確方式</div>
+        <h3>用肚子推（鼓）</h3>
+        <p>用嘴巴吹氣同時讓臉鼓起來，用手指堵住嘴唇，臉自然膨脹。同時發出「嗯」或「嗚」的聲音可以鼓得更滿。肚子一定要用力，感覺像吐氣吐到 RV。觀察肚子：應該是往內縮的。</p>
+      </div>
+      <div class="card">
+        <div class="card-label">錯誤方式</div>
+        <h3>用嘴巴從喉嚨拉負壓</h3>
+        <p>錯誤特徵：聲音聽起來很緊、很憋，喉嚨完全放鬆不了。肚子不用力 → 高機率變成喉嚨很緊、用嘴巴拉。講的是「鼓」不是「提」，從來不會說「提一口出來」。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>觀察法：聽聲音 + 看脖子，判斷空氣是「拉出來的」還是「推出來的」。<strong>正確的鼓氣聲音很鬆，喉嚨放鬆。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 4: 鼓氣正確方式與流程 -->
+  <div class="slide slide-content" data-slide="4">
+    <div class="slide-header">
+      <span class="slide-num">03</span>
+      <h2 class="slide-title">鼓氣次數與流程</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>前段微笑平壓<br><small style="color:var(--text-secondary)">嘴巴留一些氣</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>第一個鼓氣深度<br><small style="color:var(--text-secondary)">直接鼓滿</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>補面鏡、補耳壓<br><small style="color:var(--text-secondary)">露小縫平壓</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p>隔 3-5 米補滿<br><small style="color:var(--text-secondary)">第二次超用力灌滿</small></p>
+      </div>
+    </div>
+    <div class="cards cols-2" style="margin-top:8px">
+      <div class="card accent">
+        <h3>鼓氣後咬合微調</h3>
+        <p>鼓到 80-90%（不鼓到 100%），用前面牙齒輕輕咬一下（不是用舌頭頂）。這個咬合動作會讓耳朵開，同時空氣被挪動到更適合推平壓的位置。</p>
+      </div>
+      <div class="card green">
+        <h3>女生建議深度</h3>
+        <p>第一次鼓 8 米，第二次鼓 13 米（差 5 米）。男生 range 較寬，但鼓完不能緊喉嚨。面鏡捏鼻只能輕輕扭開小縫。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: 鼓氣後喉嚨縮上去 + 吞氣 -->
+  <div class="slide slide-content" data-slide="5">
+    <div class="slide-header">
+      <span class="slide-num">04</span>
+      <h2 class="slide-title">鼓氣後常見問題</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <div class="card-label">問題一</div>
+        <h3>喉嚨縮上去</h3>
+        <p>鼓完後舌根跟喉嚨縮上去、後面空空的 → 造成海豚音、想 RP、漏氣、平壓要擠很大力。根源是舌根被夾上去了。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">解決方向</div>
+        <h3>下放下巴與舌頭</h3>
+        <p>鼓氣時讓後側保持放鬆，空氣才進得去。試鼓一口氣放前面，然後往後移，感受後面的空間。不是刻意往下拉，是空氣自然撐開。</p>
+      </div>
+      <div class="card brown">
+        <div class="card-label">問題二</div>
+        <h3>15 米鼓完幾下就沒氣</h3>
+        <p>100% 是吞了或開了聲門。開聲門 = 吞氣。15 米以內胸腔還是正壓，聲門開了也不會有明顯的氣被倒抽感覺。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>鼓氣後第一下單邊難開？鼓滿時牙關打開再放回來那一下耳朵應該就要開了。如果沒開 → <strong>舌頭和臉頰附近不會用力</strong>。</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: 鼓氣後小量補氣 -->
+  <div class="slide slide-content" data-slide="6">
+    <div class="slide-header">
+      <span class="slide-num">05</span>
+      <h2 class="slide-title">鼓氣後補氣與聲門原則</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">補氣原則</div>
+        <h3>要用肚子推，鼓兩次就好</h3>
+        <p>「小量補氣」如果是後面再弄一點出來 → 就是在 RP → 容易被抽回去。正確做法：13 米鼓滿 → 露面鏡平耳壓 → 約 16 米再補滿一次 → 這樣就夠了。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">絕對不要鎖聲門</div>
+        <h3>聲門自己就會關好</h3>
+        <p>不捏鼻子直接鼓嘴巴，所有人都做得到 → 聲門自己就會關好。就算吐到 RV、胸腔負壓，還是可以輕鬆把氣放嘴巴裡。守空氣最重要的是舌根後面喉嚨上方的控制。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p>警示：有人被教鎖聲門，用力鎖了一週後聲帶鬆掉，氣從聲門漏下去，最後去打玻尿酸才恢復。<strong>靠舌頭管理空氣，不要刻意鎖聲門。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 7: 不要教 H-Lock -->
+  <div class="slide slide-content" data-slide="7">
+    <div class="slide-header">
+      <span class="slide-num">06</span>
+      <h2 class="slide-title">H-Lock 迷思與聲門漏氣</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">H-Lock 的問題</div>
+        <h3>初學者不要刻意練 H-Lock</h3>
+        <p>H-Lock 的講法（舌頭不要推、讓喉嚨推）對初學者超危險：要面對負壓、不動舌頭、只推喉嚨 → 很容易擠壓傷。喉頭附近的感知和控制就是 H-Lock 要的東西，但它從一開始鼓起來用臉的時候就一直在用，不只在最後階段。PTKH 不重要，重要的是認識你的口腔。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">聲門漏氣樣態</div>
+        <h3>三種常見漏氣</h3>
+        <p><strong>海豚音</strong>：舌根太用力 → 回到鼓氣後喉嚨縮上去的問題。<strong>開聲門想抽空氣（RP）</strong>：聲門一開，嘴巴的氣全部跑下去。解決方法：練好微笑平壓與漏氣練習。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>MF 漏氣怎麼辦？不要硬鎖聲門（容易受傷）。<strong>重點仍然是認識口腔、找到真正守空氣的位置。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 8: 空氣要早點轉 -->
+  <div class="slide slide-content" data-slide="8">
+    <div class="slide-header">
+      <span class="slide-num">07</span>
+      <h2 class="slide-title">空氣要早點轉</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>臉快推不到時<br><small style="color:var(--text-secondary)">就要換舌尖</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>舌尖快推不到時<br><small style="color:var(--text-secondary)">就要換舌根</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>早轉的好處<br><small style="color:var(--text-secondary)">舌尖推 5 下、舌根推 4 下</small></p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔥</span>
+      <p>不能等到真的沒東西可以推才要換 → <strong>太晚轉會導致後面 lock 很緊繃</strong>。早點轉比晚轉多很多下可用的平壓。</p>
+    </div>
+  </div>
+
+  <!-- Slide 9: 恆壓 vs 點放 -->
+  <div class="slide slide-content" data-slide="9">
+    <div class="slide-header">
+      <span class="slide-num">08</span>
+      <h2 class="slide-title">恆壓 vs 點放</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">恆壓（持續加壓）</div>
+        <h3>易學難精</h3>
+        <p>優點：不用放鬆重推，新手前段容易有感覺。難點：臉擠完要轉到舌頭超難；耳咽管一直開著沒平壓聲 → 沒安全感 → 擠超大力 → 浪費力氣。恆壓大師可以只用 10 的力量，但大部分人擠到 70-80。只想到 40 米，臉恆壓就夠了。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">點放</div>
+        <h3>難學但好處多太多</h3>
+        <p>精髓：每一下平壓都要從完全不用力的位置直接推上去，推完後臉跟喉嚨回到完全沒在用力的位置。能恆壓橫到 100 米的選手不到 5 個，其他全部都是點放。點放很難練，但只要願意花時間都練得起來。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p><strong>點放的好處比恆壓多太多了。</strong>有學生從恆壓改點放後，發現點放做得比恆壓好很多。微笑平壓 = 點放的感覺。</p>
+    </div>
+  </div>
+
+  <!-- Slide 10: 更深 MF vs 鼓更多氣 -->
+  <div class="slide slide-content" data-slide="10">
+    <div class="slide-header">
+      <span class="slide-num">09</span>
+      <h2 class="slide-title">更深鼓氣 vs 鼓更多氣</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心原則</div>
+        <h3>先把氣鼓對才是最重要的</h3>
+        <p>在鼓氣正確的前提下：偏好深一點鼓但不鼓滿。鼓太滿很不舒服，第一步還要先漏掉一些，不如晚一點鼓、不要鼓那麼滿。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">實例參考</div>
+        <h3>鼓氣深度與效率</h3>
+        <p>30 米鼓、33 米補一點就夠。約 20 米鼓滿、25 米灌到最滿，效率好的可以用到很深。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>平壓頻率高不等於浪費氣。比喻：裝一瓶水分 3 次或 10 次，總水量一樣。<strong>追求的不是很少次數，是每一下都很輕巧、很省力。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 11: MF 效率 -->
+  <div class="slide slide-content" data-slide="11">
+    <div class="slide-header">
+      <span class="slide-num">10</span>
+      <h2 class="slide-title">Mouthfill 效率的理解</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <div class="card-label">效率計算</div>
+        <h3>效率 = 大氣壓倍數</h3>
+        <p>水面鼓一口用到 13 米（2.3 atm）→ 效率 2.3 倍。10 米鼓（2 atm）&times; 2.3 = 4.6 atm → 可用到約 36 米。水面鼓用到 14-15 米就算及格。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">常見陷阱</div>
+        <h3>水面鼓到 20 米？小心偷提氣</h3>
+        <p>PB 六七十以上 → 真的超強。PB 三十五到四十 → 其實一直在偷提氣（RP）而不自知。學生說水面鼓用到 10 米 → 反而是好答案，代表沒在偷提氣。</p>
+      </div>
+      <div class="card brown">
+        <div class="card-label">MF vs 法蘭茲</div>
+        <h3>法蘭茲沒有所謂「效率」</h3>
+        <p>法蘭茲只有做得好或做得不好。好的法蘭茲 vs 不好的差別在省力和受傷風險低。法蘭茲做得好 → MF 效率才會好。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: MF 效率 vs 實際深度 -->
+  <div class="slide slide-content" data-slide="12">
+    <div class="slide-header">
+      <span class="slide-num">11</span>
+      <h2 class="slide-title">效率好 ≠ 下得深</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">同樣效率近 4</div>
+        <h3>PB 差距可以非常大</h3>
+        <p>有人 MF 效率接近 4（水面鼓可到近 30），但 PB 只有 40 幾甚至 35-36。另一人同效率 PB 70。PB 低的人其實在偷提氣（RP），RP 的極限大概也就 20 幾米。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">FRC/RV vs 實際深度</div>
+        <h3>FRC 可下 20，實際卡 50-60</h3>
+        <p>最簡單的原因：鼓氣鼓不滿。水面灌很容易灌到 3-4 倍效率，下深度時 20 米要灌滿就非常困難。FRC/RV 心理壓力不大，實際深度可能鼓法從推變成拉。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p>吞氣的原因：鼓了一口氣在嘴巴，但還是習慣開聲門拉空氣 → 30 米內感覺不到（胸腔正壓）→ <strong>過 30 米胸腔變負壓 → 開聲門的瞬間嘴巴裡的空氣全部被吸進去。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 13: MF 深度進階階段 -->
+  <div class="slide slide-content" data-slide="13">
+    <div class="slide-header">
+      <span class="slide-num">12</span>
+      <h2 class="slide-title">Mouthfill 深度進階階段</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong>35-36 米</strong><br><small style="color:var(--text-secondary)">第一個卡關點</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong>43-45 米</strong><br><small style="color:var(--text-secondary)">突破第一關後</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong>57-58 米</strong><br><small style="color:var(--text-secondary)">素質好的可到 60</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong>70 米</strong><br><small style="color:var(--text-secondary)">下一個里程碑</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <p><strong>85 米</strong><br><small style="color:var(--text-secondary)">MF 絕對夠用</small></p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🎯</span>
+      <p>每個階段卡的問題不同。Mouthfill 絕對夠用到 85 米。<strong>70 很順的話，下一步就是 85。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 14: 最終境界 -->
+  <div class="slide slide-content" data-slide="14">
+    <div class="slide-header">
+      <span class="slide-num">13</span>
+      <h2 class="slide-title">Mouthfill 最終境界：隨便推</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🗡️</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">無招勝有招</h3>
+        <p>比喻獨孤九劍：<br>先把所有招式全部練起來<br>然後全部忘記<br><strong>順應當下出招</strong></p>
+      </div>
+      <div class="card green" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🌊</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">隨便推</h3>
+        <p>不用照某個固定流程<br>想怎麼平就怎麼平<br><strong>練到一定程度後的追求</strong></p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>Mouthfill 練到一定程度後，要追求的是<strong>隨便推</strong>。不是要記住固定流程，而是讓身體自然反應、順應當下。</p>
+    </div>
+  </div>
+
+  <!-- Slide 15: Summary -->
+  <div class="slide slide-content" data-slide="15">
+    <div class="slide-header">
+      <span class="slide-num" style="background:var(--accent2)">✓</span>
+      <h2 class="slide-title">本章重點回顧</h2>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="num">01</div>
+        <h3>MF 是鼓不是拉</h3>
+        <p>用肚子推氣壓<br>不要開聲門拉</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">02</div>
+        <h3>鼓完後面放鬆</h3>
+        <p>舌根不縮上去<br>後面保持空間</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">03</div>
+        <h3>聲門不要鎖</h3>
+        <p>自然會鎖好<br>靠舌頭守氣</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">04</div>
+        <h3>點放優於恆壓</h3>
+        <p>每下從最放鬆推上去<br>省力又舒服</p>
+      </div>
+    </div>
+    <div class="summary-grid" style="margin-top:16px">
+      <div class="summary-card">
+        <div class="num">05</div>
+        <h3>早點轉空氣</h3>
+        <p>臉→舌尖→舌根<br>別等沒氣才換</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">06</div>
+        <h3>效率要誠實</h3>
+        <p>偷提氣效率虛高<br>14-15 米及格</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">07</div>
+        <h3>階段式突破</h3>
+        <p>35→45→58→70→85<br>每階段問題不同</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">08</div>
+        <h3>最終境界</h3>
+        <p>無招勝有招<br>隨便推</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:0.85rem;color:var(--text-secondary)">
+      自由潛水 Mouthfill 教材系列 ｜ 整理：@howt0539
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>&larr; 上一頁</button>
+  <div style="text-align:center">
+    <span class="nav-progress" id="pageNum">1 / 15</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:6.7%"></div></div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="next()">下一頁 &rarr;</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 15;
+  const slides = document.querySelectorAll('.slide');
+
+  function show(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    document.getElementById('pageNum').textContent = `${n} / ${total}`;
+    document.getElementById('progressFill').style.width = `${(n/total)*100}%`;
+    document.getElementById('prevBtn').disabled = n === 1;
+    document.getElementById('nextBtn').disabled = n === total;
+  }
+
+  function next() { if (current < total) show(++current); }
+  function prev() { if (current > 1) show(--current); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+
+</body>
+</html>

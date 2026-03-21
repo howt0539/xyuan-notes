@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ch.1 呼吸與下潛準備｜自由潛水 Mouthfill 教材</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --surface: #f0ebe3;
+      --card: #ffffff;
+      --card-border: #e8e0d4;
+      --text: #3a3330;
+      --text-secondary: #8a7e74;
+      --accent: #c4713b;
+      --accent-soft: rgba(196,113,59,0.1);
+      --accent2: #5a7a5c;
+      --accent2-soft: rgba(90,122,92,0.1);
+      --brown: #8b6f47;
+      --brown-soft: rgba(139,111,71,0.08);
+      --highlight: #e8a854;
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cover */
+    .slide-cover {
+      background: linear-gradient(135deg, #d4a574 0%, #c4713b 40%, #8b6f47 100%);
+      color: white;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    .slide-cover .cover-icon { font-size: 5rem; }
+    .slide-cover h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .slide-cover .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0.85;
+    }
+    .slide-cover .series {
+      margin-top: 20px;
+      padding: 8px 24px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Content slides */
+    .slide-content { gap: 32px; }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slide-num {
+      width: 48px; height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .slide-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+    .card.accent {
+      background: var(--accent-soft);
+      border-color: rgba(196,113,59,0.2);
+    }
+    .card.green {
+      background: var(--accent2-soft);
+      border-color: rgba(90,122,92,0.2);
+    }
+    .card.brown {
+      background: var(--brown-soft);
+      border-color: rgba(139,111,71,0.15);
+    }
+
+    .callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+    }
+    .callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .callout p { font-size: 0.95rem; line-height: 1.7; color: var(--text); }
+    .callout strong { color: var(--accent); }
+
+    .steps {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1;
+      min-width: 150px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 auto 12px;
+    }
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .step::after {
+      content: '\2192';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+    .step:last-child::after { display: none; }
+
+    /* Summary slide */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .summary-card:hover { transform: translateY(-4px); }
+    .summary-card .num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .summary-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .summary-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Nav */
+    .nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      background: rgba(250,247,242,0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--card-border);
+      z-index: 100;
+    }
+    .nav-btn {
+      padding: 10px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+    .nav-btn:disabled:hover {
+      background: var(--card);
+      color: var(--text);
+      border-color: var(--card-border);
+    }
+    .nav-progress {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--surface);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 40px 24px; }
+      .slide-cover h1 { font-size: 2rem; }
+      .slide-title { font-size: 1.4rem; }
+      .cards.cols-3 { grid-template-columns: 1fr; }
+      .cards.cols-2 { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; }
+      .step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Slide 1: Cover -->
+  <div class="slide slide-cover active" data-slide="1">
+    <div class="cover-icon">🫁</div>
+    <h1>呼吸與<br>下潛準備</h1>
+    <p class="subtitle">自由潛水呼吸與準備教學</p>
+    <span class="series">自由潛水 Mouthfill 教材系列 — Ch.1</span>
+  </div>
+
+  <!-- Slide 2: 調息與超呼吸 -->
+  <div class="slide slide-content" data-slide="2">
+    <div class="slide-header">
+      <span class="slide-num">01</span>
+      <h2 class="slide-title">調息與避免超呼吸</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">正確調息</div>
+        <h3>慢吸慢吐，但出氣量要控制</h3>
+        <p>嘴巴開口不能太大，出氣量要有控制。腹式呼吸調息可以避免超呼吸。最好的調息就是正常呼吸。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">常見陷阱</div>
+        <h3>咬呼吸管容易超呼吸</h3>
+        <p>出口大小無法限制，很容易超呼吸。判斷方法：聽呼吸管出氣聲，超大聲又超快就是超呼吸。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⚠️</span>
+      <p>4-7-8 呼吸法可以幫助降心率，但做不好就是在瘋狂超呼吸（一直吐掉 CO2）。想靠呼吸降心率 → 反而在超呼吸 → <strong>心率更高</strong>。</p>
+    </div>
+  </div>
+
+  <!-- Slide 3: 全呼吸 -->
+  <div class="slide slide-content" data-slide="3">
+    <div class="slide-header">
+      <span class="slide-num">02</span>
+      <h2 class="slide-title">全呼吸：怎樣才算吸飽</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card accent">
+        <h3>判斷吸飽的方法</h3>
+        <p>吸飽後還能講話 → 沒吸飽。要噴一口氣才能講話 → 才是真正吸飽。</p>
+      </div>
+      <div class="card green">
+        <h3>胸椎挺直</h3>
+        <p>全呼吸要胸椎挺直，同時做到垂直向擴張（很多人忽略）加上橫向擴張。</p>
+      </div>
+      <div class="card brown">
+        <h3>最後加一點抬頭</h3>
+        <p>全呼吸的最後步驟，可以再加一點點抬頭，讓空氣填到最滿。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>全呼吸完之後<strong>身體要放鬆回來</strong>。吸飽後沒有放鬆胸口、肚子、肩膀、脖子 → 容易一開始就抽得很大力。</p>
+    </div>
+  </div>
+
+  <!-- Slide 4: 下潛前調息：心率不重要 -->
+  <div class="slide slide-content" data-slide="4">
+    <div class="slide-header">
+      <span class="slide-num">03</span>
+      <h2 class="slide-title">下潛前調息：心率完全不重要</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心觀念</div>
+        <h3>潛下去後心率一定會降</h3>
+        <p>很多比賽選手下潛前 Packing 後心率飆到破百都有可能。你只要知道一件事：潛下去之後 MDR 啟動，心率一定會降。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">建議實驗</div>
+        <h3>每個自潛人都必須試一次</h3>
+        <p>第一潛：認真調息完下潛。第二潛：只確認不喘、心率不高，正常吸吐幾口就直接全呼吸下潛。你會發現兩趟感覺差不多。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>不做這個實驗，你永遠覺得調息不夠好。調息的正確姿態：<strong>正常呼吸、注意喘不喘、眼睛看舒適的景象、時間到就下。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 5: 水面心率降不下來 -->
+  <div class="slide slide-content" data-slide="5">
+    <div class="slide-header">
+      <span class="slide-num">04</span>
+      <h2 class="slide-title">水面心率降不下來怎麼辦</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card">
+        <div class="card-label">問題根源</div>
+        <h3>越想降心率 → 越超呼吸</h3>
+        <p>心率一直很高 → 注意有沒有超呼吸的問題。想靠呼吸降心率 → 反而在超呼吸 → 心率更高，形成惡性循環。</p>
+      </div>
+      <div class="card accent">
+        <div class="card-label">解決方案</div>
+        <h3>最好的調息是正常呼吸</h3>
+        <p>不要執著心率數字。MDR（哺乳類潛水反射）才是真正啟動心率下降的機制，潛下去之後心率一定會降。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔑</span>
+      <p>心率其實一點都不重要。<strong>不要為了降心率而改變呼吸方式</strong>，這是最常見的超呼吸陷阱。</p>
+    </div>
+  </div>
+
+  <!-- Slide 6: 呼吸阻力訓練器 -->
+  <div class="slide slide-content" data-slide="6">
+    <div class="slide-header">
+      <span class="slide-num">05</span>
+      <h2 class="slide-title">呼吸阻力訓練器與肺活量</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card green">
+        <div class="card-label">訓練效果</div>
+        <h3>呼吸阻力訓練器蠻有用的</h3>
+        <p>網路上常見的紅色呼吸阻力訓練器（咬在嘴巴上吸的那個），對 Mouthfill 鼓氣和一般全呼吸的肺活量都有幫助。實測效果：什麼都沒練，只有偶爾練有氧和呼吸阻力訓練，肺活量從 5800 多提升到 6200。</p>
+      </div>
+      <div class="card accent">
+        <div class="card-label">深度與肺活量</div>
+        <h3>下 100 米需要多少肺活量？</h3>
+        <p>已知下百米的人中肺活量最小約 4000 出頭。肺活量影響的只有閉氣時間，不影響平壓能力（平壓是純技巧）。下 100 的靜態閉氣最少要 6 分鐘。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      <p>絕對不是靠很強的閉氣能力在下潛，而是靠<strong>很放鬆、很省力的平壓</strong>。閉氣能力再強，平壓不好的話閉氣只是拿來被消耗的。</p>
+    </div>
+  </div>
+
+  <!-- Slide 7: Packing 的討論 -->
+  <div class="slide slide-content" data-slide="7">
+    <div class="slide-header">
+      <span class="slide-num">06</span>
+      <h2 class="slide-title">Packing 的立場與時機</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent">
+        <div class="card-label">核心立場</div>
+        <h3>支持 70 米內也 Packing</h3>
+        <p>前提：平壓已經練好，Mouthfill 水面效率至少 2.5-3 倍（戴面鏡水面鼓至少用到 17-20 米）。Packing 就是開外掛：可以更深鼓氣、胸腔比較不緊、更多空氣可用、保護不被擠壓傷。</p>
+      </div>
+      <div class="card green">
+        <div class="card-label">常見質疑</div>
+        <h3>70 以內靠 Packing，以後怎麼辦？</h3>
+        <p>把 Packing 下 70 練到超輕鬆 → 某天就突然發現可以 80 了。不 Packing 下 60 覺得很有壓力，Packing 下 70 覺得超輕鬆 → 差別就是這麼多。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>核心理念：<strong>先用輕鬆的方法觸碰目標深度 → 之後用身體下會輕鬆非常多</strong>（心理壓力小）。水面 Mouthfill 20 這個條件，滿肺跟半肺沒差 → 要的是技巧達標。</p>
+    </div>
+  </div>
+
+  <!-- Slide 8: Packing 後喉嚨緊繃 -->
+  <div class="slide slide-content" data-slide="8">
+    <div class="slide-header">
+      <span class="slide-num">07</span>
+      <h2 class="slide-title">Packing 後喉嚨緊繃的處理</h2>
+    </div>
+    <div class="cards cols-3">
+      <div class="card">
+        <h3>正常的緊</h3>
+        <p>Packing 完緊的應該是胸腔。如果先緊胸腔、最後才緊喉嚨 → 那就少 pack 一點就好。</p>
+      </div>
+      <div class="card accent">
+        <h3>可能的原因</h3>
+        <p>有可能其實是胸腔緊但沒感覺，壓力集中在喉嚨聲門位置。需要分辨清楚。</p>
+      </div>
+      <div class="card green">
+        <h3>解決方法</h3>
+        <p>拉伸超級有效。做好胸腔拉伸，Packing 後的不適感會明顯改善。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">🔥</span>
+      <p>Packing 對泳池也很重要：配到胸腔脹脹的可能也是一種鎖，幫助控制抽動。<strong>少 Packing 兩成，整個抽動感覺完全不一樣。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 9: Packing 下深度的策略 -->
+  <div class="slide slide-content" data-slide="9">
+    <div class="slide-header">
+      <span class="slide-num">08</span>
+      <h2 class="slide-title">Packing 下深度的具體策略</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>確認 MF 效率<br><small style="color:var(--text-secondary)">戴面鏡水面鼓到 18-20 米</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>先用水推試平壓<br><small style="color:var(--text-secondary)">確認可行再用身體下</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>Packing 下目標深度<br><small style="color:var(--text-secondary)">輕鬆觸碰、心理壓力小</small></p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p>練到超輕鬆<br><small style="color:var(--text-secondary)">舒適圈自然拓展</small></p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">⭐</span>
+      <p>如果技巧不夠成熟就靠 Packing 硬推 PB → 確實沒意義。<strong>前提永遠是：平壓技巧先到位。</strong></p>
+    </div>
+  </div>
+
+  <!-- Slide 10: 全呼吸吸飽後的放鬆 -->
+  <div class="slide slide-content" data-slide="10">
+    <div class="slide-header">
+      <span class="slide-num">09</span>
+      <h2 class="slide-title">下潛前的最後準備</h2>
+    </div>
+    <div class="cards cols-2">
+      <div class="card accent" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🧘</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">不要執著調息</h3>
+        <p>不做調息實驗，你永遠覺得<br>調息不夠好。<br><strong>正常呼吸就是最好的調息。</strong></p>
+      </div>
+      <div class="card green" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;">
+        <p style="font-size:2.5rem;margin-bottom:16px;">🌊</p>
+        <h3 style="font-size:1.3rem;margin-bottom:12px;">相信身體的能力</h3>
+        <p>MDR 潛下去一定會啟動<br>心率一定會降<br><strong>不需要在水面做到完美</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Summary -->
+  <div class="slide slide-content" data-slide="11">
+    <div class="slide-header">
+      <span class="slide-num" style="background:var(--accent2)">✓</span>
+      <h2 class="slide-title">本章重點回顧</h2>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="num">01</div>
+        <h3>調息簡單化</h3>
+        <p>正常呼吸最好<br>避免超呼吸</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">02</div>
+        <h3>全呼吸吸飽</h3>
+        <p>胸椎挺直<br>垂直+橫向擴張</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">03</div>
+        <h3>心率不重要</h3>
+        <p>MDR 一定啟動<br>不要執著數字</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">04</div>
+        <h3>肺活量與閉氣</h3>
+        <p>肺活量影響閉氣<br>不影響平壓能力</p>
+      </div>
+      <div class="summary-card">
+        <div class="num">05</div>
+        <h3>Packing 策略</h3>
+        <p>技巧到位才 Pack<br>輕鬆觸碰深度</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:24px;font-size:0.85rem;color:var(--text-secondary)">
+      自由潛水 Mouthfill 教材系列 ｜ 整理：@howt0539
+    </p>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>&larr; 上一頁</button>
+  <div style="text-align:center">
+    <span class="nav-progress" id="pageNum">1 / 11</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:9.1%"></div></div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="next()">下一頁 &rarr;</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 11;
+  const slides = document.querySelectorAll('.slide');
+
+  function show(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelector(`[data-slide="${n}"]`).classList.add('active');
+    document.getElementById('pageNum').textContent = `${n} / ${total}`;
+    document.getElementById('progressFill').style.width = `${(n/total)*100}%`;
+    document.getElementById('prevBtn').disabled = n === 1;
+    document.getElementById('nextBtn').disabled = n === total;
+  }
+
+  function next() { if (current < total) show(++current); }
+  function prev() { if (current > 1) show(--current); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+
+</body>
+</html>
