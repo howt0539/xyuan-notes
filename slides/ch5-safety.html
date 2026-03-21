@@ -46,7 +46,7 @@
       flex-direction: column;
       justify-content: center;
       padding: 60px 80px;
-      padding-bottom: 100px;
+      padding-bottom: 120px;
       overflow-y: auto;
       animation: fadeIn 0.4s ease;
     }
@@ -315,7 +315,7 @@
     }
 
     @media (max-width: 900px) {
-      .slide { padding: 40px 24px; padding-bottom: 120px; }
+      .slide { padding: 40px 24px; padding-bottom: 160px; }
       .slide-cover h1 { font-size: 2rem; }
       .slide-title { font-size: 1.4rem; }
       .cards.cols-3 { grid-template-columns: 1fr; }
@@ -323,6 +323,26 @@
       .summary-grid { grid-template-columns: repeat(2, 1fr); }
       .steps { flex-direction: column; }
       .step::after { display: none; }
+    }
+
+    .back-to-index {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 200;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: all 0.2s;
+    }
+    .back-to-index:hover {
+      color: var(--accent);
+      border-color: var(--accent);
     }
   </style>
 </head>
@@ -639,8 +659,8 @@
 </div>
 
 <!-- Navigation -->
+<a href="index.html" class="back-to-index">← 章節</a>
 <div class="nav">
-  <a href="index.html" style="font-size:0.85rem;color:var(--text-secondary);text-decoration:none;display:flex;align-items:center;gap:4px;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">← 章節</a>
   <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← 上一頁</button>
   <div style="text-align:center">
     <span class="nav-progress" id="pageNum">1 / 12</span>
