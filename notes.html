@@ -12,19 +12,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F1EC;
-      --surface: #EDE8E1;
-      --surface-hover: #E8E2DA;
-      --card: #FEFCF9;
-      --border: #E0D5C8;
-      --text: #3a3330;
-      --text-secondary: #8a7e74;
-      --accent: #A67B5B;
-      --accent-soft: rgba(166,123,91,0.1);
-      --accent-glow: rgba(166,123,91,0.2);
-      --star: #C4913B;
-      --tag-bg: rgba(166,123,91,0.1);
-      --tag-text: #A67B5B;
+      --bg: #E8D5CC;
+      --surface: #E0CCC2;
+      --surface-hover: #D8C4B8;
+      --card: #F5ECE6;
+      --border: #D4B5A5;
+      --text: #3A2520;
+      --text-secondary: #8A6E60;
+      --accent: #B05A3A;
+      --accent-soft: rgba(176,90,58,0.1);
+      --accent-glow: rgba(176,90,58,0.2);
+      --star: #B8860B;
+      --tag-bg: rgba(176,90,58,0.1);
+      --tag-text: #B05A3A;
       --green: #6B8F71;
       --green-bg: rgba(107,143,113,0.1);
       --radius: 16px;
@@ -46,7 +46,7 @@
       padding: 80px 24px 60px;
       text-align: center;
       overflow: hidden;
-      background: linear-gradient(160deg, #F5F1EC 0%, #EDE8E1 50%, #F0EBE4 100%);
+      background: linear-gradient(160deg, #E8D5CC 0%, #E0CCC2 50%, #E4D0C6 100%);
     }
     .hero::before {
       content: '';
@@ -169,7 +169,7 @@
     .view-toggle-btn.active {
       color: var(--accent);
       background: var(--accent-soft);
-      border-color: rgba(166,123,91,0.3);
+      border-color: rgba(176,90,58,0.3);
     }
 
     /* Nav */
@@ -177,7 +177,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(245,241,236,0.9);
+      background: rgba(232,213,204,0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
@@ -327,13 +327,13 @@
       transition: border-color 0.2s;
     }
     .topic-card:hover {
-      border-color: rgba(166,123,91,0.25);
+      border-color: rgba(176,90,58,0.25);
     }
     .topic-card.starred {
-      border-color: rgba(196,145,59,0.25);
+      border-color: rgba(184,134,11,0.25);
     }
     .topic-card.starred .topic-header {
-      background: rgba(196,145,59,0.06);
+      background: rgba(184,134,11,0.06);
     }
     .topic-card.search-hidden {
       display: none;
@@ -364,7 +364,7 @@
       font-weight: 700;
     }
     .topic-card.starred .topic-number {
-      background: rgba(196,145,59,0.12);
+      background: rgba(184,134,11,0.12);
       color: var(--star);
     }
     .topic-title {
@@ -375,7 +375,7 @@
     .star-badge {
       font-size: 0.7rem;
       color: var(--star);
-      background: rgba(196,145,59,0.1);
+      background: rgba(184,134,11,0.1);
       padding: 2px 8px;
       border-radius: 999px;
       font-weight: 600;
@@ -429,7 +429,7 @@
       opacity: 0.3;
     }
     .topic-body strong {
-      color: #2a2420;
+      color: #3A2520;
       font-weight: 600;
     }
     .topic-body h4 {
@@ -467,7 +467,7 @@
 
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(166,123,91,0.2); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(176,90,58,0.2); border-radius: 3px; }
 
     .topic-card { animation: fadeUp 0.4s ease both; }
     .topic-card:nth-child(2) { animation-delay: 0.05s; }
@@ -481,7 +481,7 @@
     }
 
     mark {
-      background: rgba(166,123,91,0.2);
+      background: rgba(176,90,58,0.2);
       color: inherit;
       padding: 1px 2px;
       border-radius: 3px;
@@ -493,7 +493,7 @@
 </head>
 <body>
 
-  <a href="/index.html" style="display:block;padding:12px 20px;color:#8a7e74;text-decoration:none;font-size:0.9rem;">← 首頁</a>
+  <a href="index.html" style="position:fixed;top:16px;left:16px;z-index:1000;color:#8A6E60;text-decoration:none;font-size:0.85rem;background:rgba(232,213,204,0.85);padding:6px 14px;border-radius:20px;backdrop-filter:blur(8px);border:1px solid #D4B5A5;">← 首頁</a>
   <header class="hero">
     <h1>🤿 直播學習筆記</h1>
     <p class="subtitle">自由潛水直播 QA 精華整理</p>

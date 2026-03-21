@@ -8,14 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #F5F1EC;
-      --surface: #EDE8E1;
-      --card: #ffffff;
-      --card-border: #E0D5C8;
-      --text: #3a3330;
-      --text-secondary: #8a7e74;
-      --accent: #A67B5B;
-      --accent-soft: rgba(166,123,91,0.1);
+      --bg: #E8D5CC;
+      --surface: #E0CCC2;
+      --card: #F5ECE6;
+      --card-border: #D4B5A5;
+      --text: #3A2520;
+      --text-secondary: #8A6E60;
+      --accent: #B05A3A;
+      --accent-soft: rgba(176,90,58,0.1);
       --accent2: #5a7a5c;
       --radius: 16px;
     }
@@ -31,7 +31,7 @@
     }
 
     .hero {
-      background: linear-gradient(135deg, #C4A882 0%, #A67B5B 40%, #8b6f47 100%);
+      background: linear-gradient(135deg, #C48A6A 0%, #B05A3A 40%, #8A5A3A 100%);
       color: white;
       text-align: center;
       padding: 80px 24px 60px;
@@ -128,21 +128,23 @@
     }
 
     .back-link {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 10px 24px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--accent);
-      border: 1px solid var(--card-border);
-      border-radius: 999px;
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      color: #8A6E60;
       text-decoration: none;
+      font-size: 0.85rem;
+      background: rgba(232,213,204,0.85);
+      padding: 6px 14px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      border: 1px solid #D4B5A5;
       transition: all 0.2s;
     }
     .back-link:hover {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
+      color: #3A2520;
+      background: rgba(224,204,194,0.95);
     }
 
     footer {
@@ -266,8 +268,8 @@
       </a>
     </div>
 
-    <a class="back-link" href="../">← 回到首頁</a>
   </main>
+  <a class="back-link" href="../">← 首頁</a>
 
   <footer>
     <p>自由潛水學習筆記 ｜ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
