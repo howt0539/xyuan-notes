@@ -22,7 +22,11 @@ mkdir -p "$OUTDIR"
 # Step 1: 下載影片
 echo ""
 echo "⬇️  Step 1/3: 下載影片..."
-yt-dlp -o "${OUTDIR}/reel_${NUM}.mp4" "$URL"
+if [ -f "${OUTDIR}/reel_${NUM}.mp4" ]; then
+  echo "⏭  影片已存在，跳過下載"
+else
+  yt-dlp --cookies-from-browser chrome -o "${OUTDIR}/reel_${NUM}.mp4" "$URL"
+fi
 echo "✅ 下載完成: ${OUTDIR}/reel_${NUM}.mp4"
 
 # Step 2: Whisper 轉逐字稿

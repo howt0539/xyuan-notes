@@ -332,10 +332,10 @@ def generate_html(all_livestreams, topics_data):
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>瘋狗 教練直播筆記｜Mouthfill 自由潛水</title>
-  <meta name="description" content="瘋狗教練（陳志璿）Mouthfill 自由潛水直播 QA 精華整理">
-  <meta property="og:title" content="瘋狗 教練直播筆記｜Mouthfill 自由潛水">
-  <meta property="og:description" content="陳志璿教練 Mouthfill 直播 QA 精華整理，含逐字稿摘要與主題索引">
+  <title>直播筆記 — 自由潛水學習筆記</title>
+  <meta name="description" content="自由潛水直播 QA 精華整理｜整理：@howt0539">
+  <meta property="og:title" content="直播筆記 — 自由潛水學習筆記">
+  <meta property="og:description" content="自由潛水直播 QA 精華整理，含逐字稿摘要與主題索引">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <style>
@@ -822,11 +822,10 @@ def generate_html(all_livestreams, topics_data):
 <body>
 
   <header class="hero">
-    <h1>🤿 <span class="accent">瘋狗</span> 教練直播筆記</h1>
-    <p class="subtitle">陳志璿｜Mouthfill 自由潛水 QA 精華整理</p>
+    <h1>🤿 直播學習筆記</h1>
+    <p class="subtitle">自由潛水直播 QA 精華整理</p>
     <div class="meta-badges">
       <span class="badge">🎙️ {total} 場直播</span>
-      <span class="badge">📷 <a href="https://www.instagram.com/xyuannnnn" target="_blank">@xyuannnnn</a></span>
       <span class="badge">✏️ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></span>
     </div>
   </header>
@@ -873,7 +872,7 @@ def generate_html(all_livestreams, topics_data):
   </main>
 
   <footer>
-    <p>內容來源：<a href="https://www.instagram.com/xyuannnnn" target="_blank">@xyuannnnn</a> IG 直播 ｜ 整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
+    <p>整理：<a href="https://www.instagram.com/howt0539" target="_blank">@howt0539</a></p>
   </footer>
 
   <script>
