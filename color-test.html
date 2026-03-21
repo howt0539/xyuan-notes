@@ -3,198 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>配色方案 — 大膽版</title>
+  <title>閱讀舒適度對比</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans TC', sans-serif; padding: 20px; background: #444; }
+    body { font-family: 'Noto Sans TC', sans-serif; padding: 20px; background: #888; }
     h1 { text-align: center; color: white; margin-bottom: 8px; font-size: 1.2rem; }
     h2 { text-align: center; color: #ccc; margin-bottom: 24px; font-size: 0.85rem; font-weight: 400; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; max-width: 1100px; margin: 0 auto; }
-    .option {
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .panel {
       border-radius: 16px;
-      padding: 24px 20px;
+      padding: 28px 24px;
       border: 2px solid rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: all 0.3s;
     }
-    .option:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-    .label { font-size: 0.75rem; margin-bottom: 4px; opacity: 0.6; }
-    .name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    .hex { font-size: 0.7rem; opacity: 0.5; margin-bottom: 14px; font-family: monospace; }
+    .panel-label { font-size: 0.8rem; margin-bottom: 4px; }
+    .panel-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
     .card {
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 10px;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
     }
-    .card h3 { font-size: 0.85rem; margin-bottom: 3px; }
-    .card p { font-size: 0.8rem; line-height: 1.6; }
+    .card h3 { font-size: 1rem; margin-bottom: 6px; }
+    .card p { font-size: 0.88rem; line-height: 1.8; }
+    .card ul { font-size: 0.85rem; line-height: 1.8; margin: 8px 0 0 20px; }
+    .callout {
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      border-left: 4px solid;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
     .tag {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.7rem;
-      margin-right: 4px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      margin-right: 6px;
     }
 
-    /* 1 — 珊瑚橘 */
-    .opt-1 { background: #F0DDD5; color: #3A2820; }
-    .opt-1 .card { background: #FAF0EB; border: 1px solid #E4C8B8; }
-    .opt-1 .card h3 { color: #C4654A; }
-    .opt-1 .tag { background: rgba(196,101,74,0.12); color: #C4654A; }
+    /* 目前版本 */
+    .current { background: #E8D5CC; color: #3A2520; }
+    .current .card { background: #F5ECE6; border: 1px solid #D4B5A5; }
+    .current .card h3 { color: #B05A3A; }
+    .current .card p, .current .card ul { color: #3A2520; }
+    .current .callout { background: rgba(176,90,58,0.1); border-color: #B05A3A; color: #3A2520; }
+    .current .callout strong { color: #B05A3A; }
+    .current .tag { background: rgba(176,90,58,0.12); color: #B05A3A; }
+    .current .panel-label { color: #8A6E60; }
 
-    /* 2 — 海洋藍綠 */
-    .opt-2 { background: #D4E8E8; color: #1E3A3A; }
-    .opt-2 .card { background: #E8F4F4; border: 1px solid #A8D0D0; }
-    .opt-2 .card h3 { color: #2A8B8B; }
-    .opt-2 .tag { background: rgba(42,139,139,0.1); color: #2A8B8B; }
-
-    /* 3 — 日落金 */
-    .opt-3 { background: #F0E0C8; color: #3A3020; }
-    .opt-3 .card { background: #FAF2E2; border: 1px solid #DEC8A0; }
-    .opt-3 .card h3 { color: #B8860B; }
-    .opt-3 .tag { background: rgba(184,134,11,0.1); color: #B8860B; }
-
-    /* 4 — 森林綠 */
-    .opt-4 { background: #D5E4D5; color: #1E331E; }
-    .opt-4 .card { background: #E8F2E8; border: 1px solid #A8C8A8; }
-    .opt-4 .card h3 { color: #3A7A3A; }
-    .opt-4 .tag { background: rgba(58,122,58,0.1); color: #3A7A3A; }
-
-    /* 5 — 靛藍 */
-    .opt-5 { background: #D8DFF0; color: #1E2840; }
-    .opt-5 .card { background: #EBF0FA; border: 1px solid #B0BFE0; }
-    .opt-5 .card h3 { color: #4A60A8; }
-    .opt-5 .tag { background: rgba(74,96,168,0.1); color: #4A60A8; }
-
-    /* 6 — 莓果紫紅 */
-    .opt-6 { background: #ECDCE6; color: #3A2030; }
-    .opt-6 .card { background: #F7EFF4; border: 1px solid #D8B8CC; }
-    .opt-6 .card h3 { color: #9B4A7A; }
-    .opt-6 .tag { background: rgba(155,74,122,0.1); color: #9B4A7A; }
-
-    /* 7 — 青瓷 */
-    .opt-7 { background: #D0E4DE; color: #1A3530; }
-    .opt-7 .card { background: #E5F2EC; border: 1px solid #9CC8B8; }
-    .opt-7 .card h3 { color: #2D8B6F; }
-    .opt-7 .tag { background: rgba(45,139,111,0.1); color: #2D8B6F; }
-
-    /* 8 — 暖赤陶 */
-    .opt-8 { background: #E8D5CC; color: #3A2520; }
-    .opt-8 .card { background: #F5ECE6; border: 1px solid #D4B5A5; }
-    .opt-8 .card h3 { color: #B05A3A; }
-    .opt-8 .tag { background: rgba(176,90,58,0.12); color: #B05A3A; }
-
-    /* 9 — 湖水藍 */
-    .opt-9 { background: #CCE0EE; color: #1A2E40; }
-    .opt-9 .card { background: #E4F0F8; border: 1px solid #9CC4E0; }
-    .opt-9 .card h3 { color: #2E7AB8; }
-    .opt-9 .tag { background: rgba(46,122,184,0.1); color: #2E7AB8; }
+    /* 調整版本 */
+    .adjusted { background: #EDE5DE; color: #2A2220; }
+    .adjusted .card { background: #FDFBF9; border: 1px solid #DDD0C6; }
+    .adjusted .card h3 { color: #B05A3A; }
+    .adjusted .card p, .adjusted .card ul { color: #2A2220; }
+    .adjusted .callout { background: rgba(176,90,58,0.07); border-color: #B05A3A; color: #2A2220; }
+    .adjusted .callout strong { color: #B05A3A; }
+    .adjusted .tag { background: rgba(176,90,58,0.1); color: #B05A3A; }
+    .adjusted .panel-label { color: #8A6E60; }
   </style>
 </head>
 <body>
-  <h1>大膽配色方案</h1>
-  <h2>更飽和、更有個性的色彩</h2>
+  <h1>閱讀舒適度對比</h1>
+  <h2>左邊是目前的配色，右邊是調整後（內容區拉白）</h2>
 
-  <div class="grid">
+  <div class="compare">
 
-    <div class="option opt-1">
-      <div class="label">1</div>
-      <div class="name">珊瑚橘</div>
-      <div class="hex">背景 #F0DDD5 ｜強調 #C4654A</div>
+    <div class="panel current">
+      <div class="panel-label">目前</div>
+      <div class="panel-name">暖赤陶（原版）</div>
+
       <div class="card">
         <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
+        <p>嘴巴輕輕鼓起來，不要很用力鼓，輕輕鬆鬆讓它膨起來就好。鼓氣時鼻子要先捏起來，否則軟顎的動作模式不正確。</p>
+        <ul>
+          <li>捏鼻子 → 讓氣從鼻子小縫漏出去</li>
+          <li>手不要整個放掉，只露一個小縫</li>
+          <li>發出類似氣球洩氣的聲音</li>
+        </ul>
       </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
+
+      <div class="callout">
+        <strong>⚠ 注意：</strong>鼻子不要放開，放開會讓軟顎關起來。鼓起來的時候下巴下方也會膨起來，漏氣時兩個要同時消。
+      </div>
+
+      <span class="tag">口腔平壓</span>
+      <span class="tag">陸地練習</span>
+      <span class="tag">Mouthfill 基礎</span>
     </div>
 
-    <div class="option opt-2">
-      <div class="label">2</div>
-      <div class="name">海洋藍綠</div>
-      <div class="hex">背景 #D4E8E8 ｜強調 #2A8B8B</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
+    <div class="panel adjusted">
+      <div class="panel-label">調整後</div>
+      <div class="panel-name">暖赤陶（閱讀優化）</div>
 
-    <div class="option opt-3">
-      <div class="label">3</div>
-      <div class="name">日落金</div>
-      <div class="hex">背景 #F0E0C8 ｜強調 #B8860B</div>
       <div class="card">
         <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
+        <p>嘴巴輕輕鼓起來，不要很用力鼓，輕輕鬆鬆讓它膨起來就好。鼓氣時鼻子要先捏起來，否則軟顎的動作模式不正確。</p>
+        <ul>
+          <li>捏鼻子 → 讓氣從鼻子小縫漏出去</li>
+          <li>手不要整個放掉，只露一個小縫</li>
+          <li>發出類似氣球洩氣的聲音</li>
+        </ul>
       </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
 
-    <div class="option opt-4">
-      <div class="label">4</div>
-      <div class="name">森林綠</div>
-      <div class="hex">背景 #D5E4D5 ｜強調 #3A7A3A</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
+      <div class="callout">
+        <strong>⚠ 注意：</strong>鼻子不要放開，放開會讓軟顎關起來。鼓起來的時候下巴下方也會膨起來，漏氣時兩個要同時消。
       </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
 
-    <div class="option opt-5">
-      <div class="label">5</div>
-      <div class="name">靛藍</div>
-      <div class="hex">背景 #D8DFF0 ｜強調 #4A60A8</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
-
-    <div class="option opt-6">
-      <div class="label">6</div>
-      <div class="name">莓果紫紅</div>
-      <div class="hex">背景 #ECDCE6 ｜強調 #9B4A7A</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
-
-    <div class="option opt-7">
-      <div class="label">7</div>
-      <div class="name">青瓷</div>
-      <div class="hex">背景 #D0E4DE ｜強調 #2D8B6F</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
-
-    <div class="option opt-8">
-      <div class="label">8</div>
-      <div class="name">暖赤陶</div>
-      <div class="hex">背景 #E8D5CC ｜強調 #B05A3A</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
-    </div>
-
-    <div class="option opt-9">
-      <div class="label">9</div>
-      <div class="name">湖水藍</div>
-      <div class="hex">背景 #CCE0EE ｜強調 #2E7AB8</div>
-      <div class="card">
-        <h3>漏氣練習</h3>
-        <p>嘴巴輕輕鼓起來，捏住鼻子，讓氣從小縫漏出去。</p>
-      </div>
-      <span class="tag">口腔平壓</span><span class="tag">陸地練習</span>
+      <span class="tag">口腔平壓</span>
+      <span class="tag">陸地練習</span>
+      <span class="tag">Mouthfill 基礎</span>
     </div>
 
   </div>

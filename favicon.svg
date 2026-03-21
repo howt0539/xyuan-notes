@@ -1,19 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <!-- Freediver silhouette - head-down streamlined position -->
-  <g fill="#A67B5B">
+  <g fill="#B05A3A">
     <!-- Head -->
-    <circle cx="16" cy="4.5" r="2.8"/>
-    <!-- Neck + Torso -->
-    <path d="M13.8,7 Q13.5,8.5 13.7,11 L14,15.5 Q14.1,17 14.5,18 L17.5,18 Q17.9,17 18,15.5 L18.3,11 Q18.5,8.5 18.2,7 Z"/>
-    <!-- Left arm along body -->
-    <path d="M13.8,9.5 Q12.2,10.2 11.2,11.5 Q10.6,12.2 10.9,12.8 Q11.4,12.2 12.5,11.2 Q13.5,10.5 14.2,10.8" opacity="0.9"/>
-    <!-- Right arm along body -->
-    <path d="M18.2,9.5 Q19.8,10.2 20.8,11.5 Q21.4,12.2 21.1,12.8 Q20.6,12.2 19.5,11.2 Q18.5,10.5 17.8,10.8" opacity="0.9"/>
-    <!-- Legs - together, straight -->
-    <path d="M14.3,17.5 L14,22.5 Q13.9,24 14.2,24.5 L17.8,24.5 Q18.1,24 18,22.5 L17.7,17.5 Z"/>
-    <!-- Left fin -->
-    <path d="M14.2,24 Q12.5,26 11,28 Q10,29.2 10.5,29.8 Q11.2,29.3 13,27 Q14,25.8 14.8,24.8 Z"/>
-    <!-- Right fin -->
-    <path d="M17.8,24 Q19.5,26 21,28 Q22,29.2 21.5,29.8 Q20.8,29.3 19,27 Q18,25.8 17.2,24.8 Z"/>
+    <circle cx="16" cy="4" r="2.5"/>
+    <!-- Neck and torso - solid filled shape -->
+    <path d="M14.2,6.2 C14,7.5 13.8,10 14,13 L14.2,18 L17.8,18 L18,13 C18.2,10 18,7.5 17.8,6.2 Z"/>
+    <!-- Left arm swept back -->
+    <path d="M14.2,8 Q12.8,9 11.8,10.5 Q11.2,11.5 11.5,12 Q12.2,11 13.2,10 Q14,9.2 14.5,9 Z"/>
+    <!-- Right arm swept back -->
+    <path d="M17.8,8 Q19.2,9 20.2,10.5 Q20.8,11.5 20.5,12 Q19.8,11 18.8,10 Q18,9.2 17.5,9 Z"/>
+    <!-- Legs together -->
+    <path d="M14.5,17.5 L14.3,24 L17.7,24 L17.5,17.5 Z"/>
+    <!-- Left fin blade -->
+    <path d="M14.3,23.5 Q13,25.5 11.5,27.5 Q10.5,29 10.8,30 Q11.8,29 13.5,27 Q14.5,25.5 15,24.5 Z"/>
+    <!-- Right fin blade -->
+    <path d="M17.7,23.5 Q19,25.5 20.5,27.5 Q21.5,29 21.2,30 Q20.2,29 18.5,27 Q17.5,25.5 17,24.5 Z"/>
   </g>
+  <!-- Bubbles -->
+  <circle cx="21" cy="6" r="1.2" fill="#B05A3A" opacity="0.25"/>
+  <circle cx="22.5" cy="9.5" r="0.8" fill="#B05A3A" opacity="0.2"/>
+  <circle cx="20" cy="3" r="0.6" fill="#B05A3A" opacity="0.3"/>
 </svg>
