@@ -11,6 +11,7 @@ import json
 
 CONTENT_DIR = os.path.join(os.path.dirname(__file__), '..', 'content')
 OUTPUT_FILE = os.path.join(os.path.dirname(__file__), '..', 'index.html')
+TOPICS_FILE = os.path.join(CONTENT_DIR, 'topics.json')
 
 
 def parse_frontmatter(text):
@@ -115,11 +116,10 @@ def render_items(items, depth=0):
     return html
 
 
-def render_topic(topic):
+def render_topic(topic, source_label=None):
     """Render a single topic card."""
     starred_class = ' starred' if topic['starred'] else ''
     star_badge = '<span class="star-badge">⭐ 重點</span>' if topic['starred'] else ''
-    num_class = ''
 
     body_html = ''
 
@@ -134,10 +134,15 @@ def render_topic(topic):
     else:
         body_html = render_items(topic['items'])
 
+    source_html = ''
+    if source_label:
+        source_html = f'<span class="topic-source">{source_label}</span>'
+
     return f'''      <div class="topic-card{starred_class}">
         <div class="topic-header" onclick="toggle(this)">
           <span class="topic-number">{topic["number"]}</span>
           <span class="topic-title">{md_inline(topic["title"])}</span>
+          {source_html}
           {star_badge}
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -171,11 +176,77 @@ def render_livestream(meta, topics):
     </section>'''
 
 
-def build_search_data(all_livestreams):
+def render_category_sections(all_livestreams, topics_data):
+    """Render topics grouped by category."""
+    categories = topics_data['categories']
+    icons = topics_data.get('category_icons', {})
+    topic_map = topics_data['topics']
+
+    # Collect topics per category
+    cat_topics = {cat: [] for cat in categories}
+
+    for meta, topics in all_livestreams:
+        num = meta.get('number', '??')
+        date_key = num  # e.g. "2025-11-24"
+        mapping = topic_map.get(date_key, {})
+        for topic in topics:
+            cat = mapping.get(topic['number'], '裝備與其他')
+            # Format short date for source label
+            parts = date_key.split('-')
+            short = f'{int(parts[1])}/{int(parts[2])}' if len(parts) >= 3 else date_key
+            cat_topics[cat].append((topic, short))
+
+    html_parts = []
+    for cat in categories:
+        items = cat_topics[cat]
+        if not items:
+            continue
+        icon = icons.get(cat, '')
+        count = len(items)
+        cards = '\n\n'.join(
+            render_topic(t, source_label=short) for t, short in items
+        )
+        cat_id = cat.replace(' ', '_')
+        html_parts.append(f'''    <section class="category-section" id="cat-{cat_id}">
+      <div class="cat-header">
+        <span class="cat-icon">{icon}</span>
+        <h2>{cat}</h2>
+        <span class="cat-count">{count} 個主題</span>
+      </div>
+
+{cards}
+
+    </section>''')
+
+    return '\n\n'.join(html_parts)
+
+
+def render_category_nav(topics_data):
+    """Render category navigation buttons."""
+    categories = topics_data['categories']
+    icons = topics_data.get('category_icons', {})
+    parts = []
+    for i, cat in enumerate(categories):
+        icon = icons.get(cat, '')
+        active = ' active' if i == 0 else ''
+        cat_id = cat.replace(' ', '_')
+        # Short label for nav
+        short_label = cat.replace('與', '/')
+        parts.append(
+            f'<button class="nav-btn cat-nav-btn{active}" '
+            f'onclick="scrollToSection(\'cat-{cat_id}\')" '
+            f'title="{cat}">{icon} {short_label}</button>'
+        )
+    return '\n      '.join(parts)
+
+
+def build_search_data(all_livestreams, topics_data=None):
     """Build JSON search index."""
+    topic_map = topics_data['topics'] if topics_data else {}
     data = []
     for meta, topics in all_livestreams:
         num = meta.get('number', '??')
+        mapping = topic_map.get(num, {})
         for topic in topics:
             # Collect all text
             texts = [topic['title']]
@@ -195,28 +266,48 @@ def build_search_data(all_livestreams):
                 'num': topic['number'],
                 'title': topic['title'],
                 'starred': topic['starred'],
+                'cat': mapping.get(topic['number'], ''),
                 'text': ' '.join(texts),
             })
     return json.dumps(data, ensure_ascii=False)
 
 
-def generate_html(all_livestreams):
+def generate_html(all_livestreams, topics_data):
     """Generate the complete HTML page."""
-    # Nav buttons
-    nav_buttons = '\n      '.join(
-        f'<button class="nav-btn{" active" if i == 0 else ""}" onclick="scrollToSection(\'live{meta["number"]}\')">'
-        f'直播 {meta["number"]}</button>'
-        for i, (meta, _) in enumerate(all_livestreams)
-    )
+    # Date nav buttons
+    nav_parts = []
+    current_year = None
+    for i, (meta, _) in enumerate(all_livestreams):
+        num = meta.get('number', '')
+        parts = num.split('-')
+        year = parts[0] if len(parts) >= 3 else ''
+        short_date = f'{int(parts[1])}/{int(parts[2])}' if len(parts) >= 3 else num
+        if year != current_year:
+            if current_year is not None:
+                nav_parts.append('<span class="nav-divider"></span>')
+            nav_parts.append(f'<span class="nav-year">{year}</span>')
+            current_year = year
+        active = ' active' if i == 0 else ''
+        nav_parts.append(
+            f'<button class="nav-btn date-nav-btn{active}" onclick="scrollToSection(\'live{num}\')" title="直播 {num}">'
+            f'{short_date}</button>'
+        )
+    date_nav_buttons = '\n      '.join(nav_parts)
 
-    # Livestream sections
-    sections = '\n\n'.join(
+    # Category nav buttons
+    cat_nav_buttons = render_category_nav(topics_data)
+
+    # Date view sections
+    date_sections = '\n\n'.join(
         render_livestream(meta, topics)
         for meta, topics in all_livestreams
     )
 
+    # Category view sections
+    cat_sections = render_category_sections(all_livestreams, topics_data)
+
     # Search data
-    search_data = build_search_data(all_livestreams)
+    search_data = build_search_data(all_livestreams, topics_data)
 
     total = len(all_livestreams)
 
@@ -362,6 +453,37 @@ def generate_html(all_livestreams):
       display: none;
     }}
 
+    /* View Toggle */
+    .view-toggle {{
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 16px;
+      padding: 0 20px;
+    }}
+    .view-toggle-btn {{
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }}
+    .view-toggle-btn:first-child {{
+      border-radius: 999px 0 0 999px;
+    }}
+    .view-toggle-btn:last-child {{
+      border-radius: 0 999px 999px 0;
+    }}
+    .view-toggle-btn.active {{
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(108,140,255,0.3);
+    }}
+
     /* Nav */
     .section-nav {{
       position: sticky;
@@ -372,7 +494,7 @@ def generate_html(all_livestreams):
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       padding: 0 20px;
-      margin-top: 16px;
+      margin-top: 8px;
     }}
     .section-nav .nav-inner {{
       max-width: 820px;
@@ -383,8 +505,24 @@ def generate_html(all_livestreams):
       scrollbar-width: none;
     }}
     .section-nav .nav-inner::-webkit-scrollbar {{ display: none; }}
+    .nav-year {{
+      padding: 14px 8px 14px 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      align-self: center;
+    }}
+    .nav-divider {{
+      width: 1px;
+      background: var(--border);
+      margin: 10px 4px;
+      flex-shrink: 0;
+    }}
     .nav-btn {{
-      padding: 14px 20px;
+      padding: 14px 14px;
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--text-secondary);
@@ -398,6 +536,10 @@ def generate_html(all_livestreams):
     .nav-btn:hover, .nav-btn.active {{
       color: var(--accent);
       border-bottom-color: var(--accent);
+    }}
+    .cat-nav-btn {{
+      font-size: 0.8rem;
+      padding: 14px 10px;
     }}
 
     /* Livestream */
@@ -439,6 +581,46 @@ def generate_html(all_livestreams):
       display: inline-flex;
       align-items: center;
       gap: 5px;
+    }}
+
+    /* Category Sections */
+    .category-section {{
+      padding: 48px 0;
+    }}
+    .category-section + .category-section {{
+      border-top: 1px solid var(--border);
+    }}
+    .cat-header {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }}
+    .cat-icon {{
+      font-size: 1.8rem;
+    }}
+    .cat-header h2 {{
+      font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+      font-weight: 700;
+      line-height: 1.4;
+    }}
+    .cat-count {{
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      background: var(--surface);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }}
+
+    /* Topic source label (shown in category view) */
+    .topic-source {{
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 500;
     }}
 
     /* Topic Cards */
@@ -586,6 +768,7 @@ def generate_html(all_livestreams):
       .topic-body {{ padding-left: 20px; }}
       .topic-header {{ padding: 14px 16px; }}
       .nav-btn {{ padding: 12px 14px; font-size: 0.85rem; }}
+      .cat-nav-btn {{ font-size: 0.75rem; padding: 12px 8px; }}
     }}
 
     ::-webkit-scrollbar {{ width: 6px; }}
@@ -609,6 +792,9 @@ def generate_html(all_livestreams):
       padding: 1px 2px;
       border-radius: 3px;
     }}
+
+    /* Hidden view */
+    .view-hidden {{ display: none !important; }}
   </style>
 </head>
 <body>
@@ -630,16 +816,37 @@ def generate_html(all_livestreams):
   </div>
   <div class="search-results-info" id="searchInfo"></div>
 
-  <!-- Nav -->
-  <nav class="section-nav">
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button class="view-toggle-btn active" onclick="switchView('date')">📅 按日期</button>
+    <button class="view-toggle-btn" onclick="switchView('topic')">📂 按主題</button>
+  </div>
+
+  <!-- Date Nav -->
+  <nav class="section-nav" id="dateNav">
     <div class="nav-inner">
-      {nav_buttons}
+      {date_nav_buttons}
     </div>
   </nav>
 
-  <main class="container">
+  <!-- Category Nav -->
+  <nav class="section-nav view-hidden" id="catNav">
+    <div class="nav-inner">
+      {cat_nav_buttons}
+    </div>
+  </nav>
 
-{sections}
+  <!-- Date View -->
+  <main class="container" id="dateView">
+
+{date_sections}
+
+  </main>
+
+  <!-- Category View -->
+  <main class="container view-hidden" id="catView">
+
+{cat_sections}
 
   </main>
 
@@ -656,8 +863,45 @@ def generate_html(all_livestreams):
     // Scroll to section
     function scrollToSection(id) {{
       document.getElementById(id).scrollIntoView({{ behavior: 'smooth' }});
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
+      // Update active nav btn
+      const activeView = document.getElementById('dateView').classList.contains('view-hidden') ? 'cat' : 'date';
+      const navClass = activeView === 'date' ? '.date-nav-btn' : '.cat-nav-btn';
+      document.querySelectorAll(navClass).forEach(b => b.classList.remove('active'));
+      if (event && event.target) event.target.classList.add('active');
+    }}
+
+    // View switching
+    let currentView = 'date';
+    function switchView(view) {{
+      if (view === currentView) return;
+      currentView = view;
+
+      const dateView = document.getElementById('dateView');
+      const catView = document.getElementById('catView');
+      const dateNav = document.getElementById('dateNav');
+      const catNav = document.getElementById('catNav');
+      const toggleBtns = document.querySelectorAll('.view-toggle-btn');
+
+      if (view === 'date') {{
+        dateView.classList.remove('view-hidden');
+        catView.classList.add('view-hidden');
+        dateNav.classList.remove('view-hidden');
+        catNav.classList.add('view-hidden');
+        toggleBtns[0].classList.add('active');
+        toggleBtns[1].classList.remove('active');
+      }} else {{
+        dateView.classList.add('view-hidden');
+        catView.classList.remove('view-hidden');
+        dateNav.classList.add('view-hidden');
+        catNav.classList.remove('view-hidden');
+        toggleBtns[0].classList.remove('active');
+        toggleBtns[1].classList.add('active');
+      }}
+
+      // Clear search
+      document.querySelector('.search-box').value = '';
+      doSearch('');
+      window.scrollTo({{ top: 0 }});
     }}
 
     // Search
@@ -665,10 +909,11 @@ def generate_html(all_livestreams):
 
     function doSearch(query) {{
       const info = document.getElementById('searchInfo');
-      const allCards = document.querySelectorAll('.topic-card');
 
       if (!query.trim()) {{
-        allCards.forEach(c => c.classList.remove('search-hidden'));
+        // Show all cards in both views
+        document.querySelectorAll('.topic-card').forEach(c => c.classList.remove('search-hidden'));
+        document.querySelectorAll('.livestream, .category-section').forEach(s => s.style.display = '');
         info.style.display = 'none';
         return;
       }}
@@ -676,19 +921,45 @@ def generate_html(all_livestreams):
       const q = query.toLowerCase();
       let count = 0;
 
-      searchData.forEach((item, i) => {{
-        const section = document.getElementById('live' + item.live);
-        if (!section) return;
-        const cards = section.querySelectorAll('.topic-card');
-        const card = cards[parseInt(item.num) - 1];
-        if (!card) return;
+      // Hide all cards first
+      document.querySelectorAll('.topic-card').forEach(c => c.classList.add('search-hidden'));
 
+      // Date view search
+      searchData.forEach((item) => {{
         if (item.text.toLowerCase().includes(q) || item.title.toLowerCase().includes(q)) {{
-          card.classList.remove('search-hidden');
           count++;
-        }} else {{
-          card.classList.add('search-hidden');
+          // Show in date view
+          const section = document.getElementById('live' + item.live);
+          if (section) {{
+            const cards = section.querySelectorAll('.topic-card');
+            const card = cards[parseInt(item.num) - 1];
+            if (card) card.classList.remove('search-hidden');
+          }}
+          // Show in category view
+          if (item.cat) {{
+            const catId = 'cat-' + item.cat.replace(/ /g, '_');
+            const catSection = document.getElementById(catId);
+            if (catSection) {{
+              const catCards = catSection.querySelectorAll('.topic-card');
+              catCards.forEach(cc => {{
+                const title = cc.querySelector('.topic-title');
+                if (title && title.textContent.trim() === item.title) {{
+                  cc.classList.remove('search-hidden');
+                }}
+              }});
+            }}
+          }}
         }}
+      }});
+
+      // Hide empty sections
+      document.querySelectorAll('.livestream').forEach(s => {{
+        const visible = s.querySelectorAll('.topic-card:not(.search-hidden)');
+        s.style.display = visible.length ? '' : 'none';
+      }});
+      document.querySelectorAll('.category-section').forEach(s => {{
+        const visible = s.querySelectorAll('.topic-card:not(.search-hidden)');
+        s.style.display = visible.length ? '' : 'none';
       }});
 
       info.textContent = `找到 ${{count}} 個相關主題`;
@@ -696,20 +967,52 @@ def generate_html(all_livestreams):
     }}
 
     // Update nav on scroll
-    const sections = document.querySelectorAll('.livestream');
-    const navBtns = document.querySelectorAll('.nav-btn');
-    window.addEventListener('scroll', () => {{
-      let current = '';
-      sections.forEach(section => {{
-        const top = section.offsetTop - 80;
-        if (scrollY >= top) current = section.id;
-      }});
-      navBtns.forEach(btn => {{
-        btn.classList.remove('active');
-        const onclick = btn.getAttribute('onclick') || '';
-        if (onclick.includes(current) && current) btn.classList.add('active');
-      }});
-    }});
+    function updateScrollNav() {{
+      if (currentView === 'date') {{
+        const sections = document.querySelectorAll('.livestream');
+        const navBtns = document.querySelectorAll('.date-nav-btn');
+        const navInner = document.querySelector('#dateNav .nav-inner');
+        let current = '';
+        sections.forEach(section => {{
+          const top = section.offsetTop - 80;
+          if (scrollY >= top) current = section.id;
+        }});
+        navBtns.forEach(btn => {{
+          btn.classList.remove('active');
+          const onclick = btn.getAttribute('onclick') || '';
+          if (onclick.includes(current) && current) {{
+            btn.classList.add('active');
+            const navRect = navInner.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            if (btnRect.left < navRect.left || btnRect.right > navRect.right) {{
+              btn.scrollIntoView({{ behavior: 'smooth', inline: 'center', block: 'nearest' }});
+            }}
+          }}
+        }});
+      }} else {{
+        const sections = document.querySelectorAll('.category-section');
+        const navBtns = document.querySelectorAll('.cat-nav-btn');
+        const navInner = document.querySelector('#catNav .nav-inner');
+        let current = '';
+        sections.forEach(section => {{
+          const top = section.offsetTop - 80;
+          if (scrollY >= top) current = section.id;
+        }});
+        navBtns.forEach(btn => {{
+          btn.classList.remove('active');
+          const onclick = btn.getAttribute('onclick') || '';
+          if (onclick.includes(current) && current) {{
+            btn.classList.add('active');
+            const navRect = navInner.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            if (btnRect.left < navRect.left || btnRect.right > navRect.right) {{
+              btn.scrollIntoView({{ behavior: 'smooth', inline: 'center', block: 'nearest' }});
+            }}
+          }}
+        }});
+      }}
+    }}
+    window.addEventListener('scroll', updateScrollNav);
   </script>
 
 </body>
@@ -724,6 +1027,16 @@ def main():
         print('❌ 沒有找到 content/live*.md 檔案')
         return
 
+    # Load topics data
+    topics_data = None
+    if os.path.exists(TOPICS_FILE):
+        with open(TOPICS_FILE, 'r') as fh:
+            topics_data = json.load(fh)
+        print(f'📂 載入主題分類：{len(topics_data["categories"])} 個分類')
+    else:
+        print('⚠️  找不到 topics.json，將不產生主題視角')
+        topics_data = {'categories': [], 'category_icons': {}, 'topics': {}}
+
     all_livestreams = []
     for f in md_files:
         with open(f, 'r') as fh:
@@ -733,7 +1046,7 @@ def main():
         all_livestreams.append((meta, topics))
         print(f'📄 {os.path.basename(f)}: {len(topics)} 個主題')
 
-    html = generate_html(all_livestreams)
+    html = generate_html(all_livestreams, topics_data)
 
     with open(OUTPUT_FILE, 'w') as fh:
         fh.write(html)
