@@ -711,6 +711,7 @@
   const slides = document.querySelectorAll('.slide');
 
   function show(n) {
+    window.scrollTo(0, 0);
     slides.forEach(s => s.classList.remove('active'));
     document.querySelector(`[data-slide="${n}"]`).classList.add('active');
     document.getElementById('pageNum').textContent = `${n} / ${total}`;
